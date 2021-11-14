@@ -77,12 +77,12 @@ Wir empfehlen, zusätzlich zum in IntelliJ integrierten Git-Client die Software 
 
 ## Continuous Integration Pipeline
 
-Der GitLab-Server führt automatisch Builds und Tests Ihrer Commits durch. Damit können Sie und wir schon im Vorfeld prüfen, ob Ihr aktueller Stand den Anforderungen entspricht.
+Der GitLab-Server führt automatisch Builds und Tests Ihrer Commits durch. Damit können Sie und wir schon im Vorfeld prüfen, ob Ihr aktueller Stand den Anforderungen entspricht. Die existierenden Unit-Tests werden automatisch übersprungen wenn Sie die entsprechende Praktikumsaufgabe noch nicht implementiert haben.
 Wie oben beschrieben, setzen wir dabei voraus, dass Sie Ihr Projekt in dem von uns vorgesehenem Package entwickeln: `de.hda.fbi.db2.stud`. Wenn Sie sich nicht an diese Anforderung halten, erhalten Sie kein Testat! Den Stand Ihrer Builds und Tests können Sie links in Ihrem Repository über das Menu "CI/CD" &rarr; "Pipelines" abrufen.
 
 Die Pipeline verwendet die folgenden zwei Tools:
 
-- [Checkstyle](http://checkstyle.sourceforge.net/) ist ein Werkzeug zur statischen Code-Analyse zur Prüfung des Programmierstils von Java-Sourcecode. Konkret verwenden wir im Praktikum Google's Java Code Style. Eine Beschreibung können Sie [hier](https://google.github.io/styleguide/javaguide.html) bzw. [hier](http://checkstyle.sourceforge.net/google_style.html) finden.
+- [Checkstyle](https://checkstyle.sourceforge.io/) ist ein Werkzeug zur statischen Code-Analyse zur Prüfung des Programmierstils von Java-Sourcecode. Konkret verwenden wir im Praktikum Google's Java Code Style. Eine Beschreibung können Sie [hier](https://google.github.io/styleguide/javaguide.html) bzw. [hier](https://checkstyle.sourceforge.io/google_style.html) finden.
 - [Spotbugs](https://spotbugs.github.io/) such in Java-Programmen nach Fehlermustern. Solche Fehlermuster deuten oft auf tatsächliche Fehler hin.
 
 ## Nutzen der Checkstyle und Spotbugs in IntelliJ

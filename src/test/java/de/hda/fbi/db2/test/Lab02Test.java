@@ -1,11 +1,11 @@
 package de.hda.fbi.db2.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.controller.Controller;
@@ -23,16 +23,23 @@ import org.eclipse.persistence.mappings.AggregateCollectionMapping;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.DirectCollectionMapping;
 import org.eclipse.persistence.mappings.DirectMapMapping;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 /**
  * Created by l.koehler on 05.08.2019.
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class Lab02Test {
+// Disable on CI server because it requires database access
+@DisabledIfSystemProperty(
+    named = "ci-server",
+    matches = "true",
+    disabledReason = "Running this test on the CI server is not supported"
+)
+@TestMethodOrder(MethodOrderer.MethodName.class)
+class Lab02Test {
 
   private static Metamodel metaData;
 
@@ -64,16 +71,12 @@ public class Lab02Test {
   /**
    * Lab02Test init.
    */
-  @BeforeClass
-  public static void init() {
+  @BeforeAll
+  static void init() {
     controller = Controller.getInstance();
-    // Skip test class if students have not implemented lab01 yet
-    assumeNotNull(controller.getLab01Data());
-
     Lab02EntityManager impl = controller.getLab02EntityManager();
-    if (impl == null) {
-      fail("Could not find Lab02EntityManager implementation");
-    }
+    // Skip test if students have not implemented class yet
+    assumeTrue(impl != null, "Lab02EntityManager implementation does not exist");
 
     String expectedPackage = "de.hda.fbi.db2.stud.impl";
     // Check startsWith to also allow subpackages
@@ -92,20 +95,20 @@ public class Lab02Test {
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
-  public void test1EntityManager() {
+  void test1EntityManager() {
     try {
       if (controller.getLab02EntityManager().getEntityManager() == null) {
         fail("Lab02EntityManager.getEntityManager() returns null");
       }
       setMetaData(controller.getLab02EntityManager().getEntityManager().getMetamodel());
     } catch (Exception e) {
-      fail("Exception during entityManager creation");
+      fail("Exception during entityManager creation", e);
     }
   }
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
-  public void test2FindCategory() {
+  void test2FindCategory() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -117,8 +120,8 @@ public class Lab02Test {
         List<?> categories = controller.getLab01Data().getCategories();
         if (categories != null && !categories.isEmpty()) {
           Class<?> javaType = current.getJavaType();
-          assertSame("Category class used by Lab01Data should be same as entity type",
-              categories.get(0).getClass(), javaType);
+          assertSame(categories.get(0).getClass(), javaType,
+              "Category class used by Lab01Data should be same as entity type");
         }
 
         return;
@@ -129,7 +132,7 @@ public class Lab02Test {
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
-  public void test3FindQuestion() {
+  void test3FindQuestion() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -141,8 +144,8 @@ public class Lab02Test {
         List<?> questions = controller.getLab01Data().getQuestions();
         if (questions != null && !questions.isEmpty()) {
           Class<?> javaType = current.getJavaType();
-          assertSame("Question class used by Lab01Data should be same as entity type",
-              questions.get(0).getClass(), javaType);
+          assertSame(questions.get(0).getClass(), javaType,
+              "Question class used by Lab01Data should be same as entity type");
         }
 
         return;
@@ -152,7 +155,7 @@ public class Lab02Test {
   }
 
   @Test
-  public void test4FindAnswer() {
+  void test4FindAnswer() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -177,7 +180,7 @@ public class Lab02Test {
   }
 
   @Test
-  public void test5AnswerStringsInQuestion() {
+  void test5AnswerStringsInQuestion() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -201,7 +204,7 @@ public class Lab02Test {
   }
 
   @Test
-  public void test6QuestionInCategory() {
+  void test6QuestionInCategory() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -238,15 +241,15 @@ public class Lab02Test {
   @SuppressWarnings({"SimplifiableAssertion", "EqualsWithItself", "ConstantConditions"})
   private static void assertEqualsImplementation(Object a, Object b) {
     String className = a.getClass().getSimpleName();
-    assertTrue(className + " equals method should return true for `this`", a.equals(a));
-    assertFalse(className + " equals method should return false for `null`",
-        a.equals(null));
-    assertFalse(className + " equals method should return false for different objects",
-        a.equals(b));
+    assertTrue(a.equals(a), className + " equals method should return true for `this`");
+    assertFalse(a.equals(null),
+        className + " equals method should return false for `null`");
+    assertFalse(a.equals(b),
+        className + " equals method should return false for different objects");
   }
 
   @Test
-  public void test7EqualsMethod() {
+  void test7EqualsMethod() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -294,8 +297,8 @@ public class Lab02Test {
 
     Object obj = objects.get(0);
     String className = obj.getClass().getSimpleName();
-    assertEquals(className + " hashCode method should return consistent results",
-        obj.hashCode(), obj.hashCode());
+    assertEquals(obj.hashCode(), obj.hashCode(),
+        className + " hashCode method should return consistent results");
 
     // Check if student implementation just calls `super.hashCode()`
     // Because super.hashCode() could coincidentally be the same as properly implemented hashCode()
@@ -314,7 +317,7 @@ public class Lab02Test {
   }
 
   @Test
-  public void test8HashCodeMethod() {
+  void test8HashCodeMethod() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -345,7 +348,7 @@ public class Lab02Test {
   }
 
   @Test
-  public void test9CategoryNameUnique() {
+  void test9CategoryNameUnique() {
     if (metaData == null) {
       fail("No MetaModel");
     }

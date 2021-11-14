@@ -1,10 +1,10 @@
 package de.hda.fbi.db2.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import de.hda.fbi.db2.api.Lab01Data;
 import de.hda.fbi.db2.api.Lab03Game;
@@ -14,16 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 /**
  * Created by l.koehler on 05.08.2019.
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class Lab03Test {
+// Disable on CI server because it requires database access
+@DisabledIfSystemProperty(
+    named = "ci-server",
+    matches = "true",
+    disabledReason = "Running this test on the CI server is not supported"
+)
+@TestMethodOrder(MethodOrderer.MethodName.class)
+class Lab03Test {
 
   private static Metamodel metaData;
 
@@ -38,16 +45,12 @@ public class Lab03Test {
   /**
    * Lab03Test init.
    */
-  @BeforeClass
-  public static void init() {
+  @BeforeAll
+  static void init() {
     controller = Controller.getInstance();
-    // Skip test class if students have not implemented lab01 or lab02 yet
-    assumeNotNull(controller.getLab01Data(), controller.getLab02EntityManager());
-
     Lab03Game impl = controller.getLab03Game();
-    if (impl == null) {
-      fail("Could not find Lab02EntityManager implementation");
-    }
+    // Skip test if students have not implemented class yet
+    assumeTrue(impl != null, "Lab03Game implementation does not exist");
 
     String expectedPackage = "de.hda.fbi.db2.stud.impl";
     // Check startsWith to also allow subpackages
@@ -74,7 +77,7 @@ public class Lab03Test {
   }
 
   @Test
-  public void test1Functionality() {
+  void test1Functionality() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -87,8 +90,8 @@ public class Lab03Test {
 
     List<?> questions = gameController.getQuestions(categories, 2);
     assertNotNull(questions);
-    assertFalse("Questions for categories should not be empty", questions.isEmpty());
-    assertTrue("Should at most return 2 questions", questions.size() <= 2);
+    assertFalse(questions.isEmpty(), "Questions for categories should not be empty");
+    assertTrue(questions.size() <= 2, "Should at most return 2 questions");
 
     Object player = gameController.getOrCreatePlayer("PlayerName");
     assertNotNull(player);
@@ -100,7 +103,7 @@ public class Lab03Test {
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
-  public void test2FindGameEntity() {
+  void test2FindGameEntity() {
     if (metaData == null) {
       fail("No MetaModel");
     }
@@ -113,8 +116,8 @@ public class Lab03Test {
 
     List<?> questions = gameController.getQuestions(categories, 2);
     assertNotNull(questions);
-    assertFalse("Questions for categories should not be empty", questions.isEmpty());
-    assertTrue("Should at most return 2 questions", questions.size() <= 2);
+    assertFalse(questions.isEmpty(), "Questions for categories should not be empty");
+    assertTrue(questions.size() <= 2, "Should at most return 2 questions");
 
     Object player = gameController.getOrCreatePlayer("PlayerName");
     assertNotNull(player);
@@ -135,7 +138,7 @@ public class Lab03Test {
   }
 
   @Test
-  public void test3FindPlayerEntity() {
+  void test3FindPlayerEntity() {
     if (metaData == null) {
       fail("No MetaModel");
     }

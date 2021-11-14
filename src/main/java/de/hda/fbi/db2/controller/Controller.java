@@ -91,12 +91,28 @@ public class Controller {
         Class<?> superclass = clazz.getSuperclass();
         if (superclass != null) {
           if (superclass == Lab01Data.class) {
+            if (lab01Data != null) {
+              throw new IllegalStateException("Multiple classes implement Lab01Data: "
+                  + lab01Data.getClass().getName() + ", " + clazz.getName());
+            }
             lab01Data = createInstance(clazz);
           } else if (superclass == Lab02EntityManager.class) {
+            if (lab02EntityManager != null) {
+              throw new IllegalStateException("Multiple classes implement Lab02EntityManager: "
+                  + lab02EntityManager.getClass().getName() + ", " + clazz.getName());
+            }
             lab02EntityManager = createInstance(clazz);
           } else if (superclass == Lab03Game.class) {
+            if (lab03Game != null) {
+              throw new IllegalStateException("Multiple classes implement Lab03Game: "
+                  + lab03Game.getClass().getName() + ", " + clazz.getName());
+            }
             lab03Game = createInstance(clazz);
           } else if (superclass == Lab04MassData.class) {
+            if (lab04MassData != null) {
+              throw new IllegalStateException("Multiple classes implement Lab04MassData: "
+                  + lab04MassData.getClass().getName() + ", " + clazz.getName());
+            }
             lab04MassData = createInstance(clazz);
           }
         }

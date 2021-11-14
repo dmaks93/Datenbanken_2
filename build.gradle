@@ -89,9 +89,24 @@ dependencies {
     testCompileOnly "com.github.spotbugs:spotbugs-annotations:$spotBugsAnnotationsVersion"
 
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
+test {
+    // Use JUnit 5 for tests
+    useJUnitPlatform()
+
+    // Pass system property to test JVM, see https://stackoverflow.com/a/21406600
+    systemProperty 'ci-server', System.getProperty('ci-server')
+
+    // Log information while running tests
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+
+        showExceptions true
+        exceptionFormat 'full'
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {

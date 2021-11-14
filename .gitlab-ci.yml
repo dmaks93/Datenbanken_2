@@ -56,6 +56,11 @@ spotbugs_test:
       - spotbugsTest.html
     expire_in: 1 week
 
+test:
+  stage: check
+  script:
+    - ./gradlew test -Dci-server=true
+
 
 # create_dependency_image:
 #   stage: create_dependency_image
