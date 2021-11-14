@@ -9,6 +9,7 @@ import static org.junit.Assume.assumeNotNull;
 import de.hda.fbi.db2.api.Lab01Data;
 import de.hda.fbi.db2.api.Lab03Game;
 import de.hda.fbi.db2.controller.Controller;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.metamodel.EntityType;
@@ -97,6 +98,7 @@ public class Lab03Test {
     gameController.persistGame(game);
   }
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
   public void test2FindGameEntity() {
     if (metaData == null) {

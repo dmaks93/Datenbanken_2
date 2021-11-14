@@ -1,5 +1,6 @@
 package de.hda.fbi.db2.api;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public abstract class Lab03Game {
    *
    * @param lab02EntityManager lab02EntityManager
    */
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
     this.lab02EntityManager = lab02EntityManager;
   }

@@ -9,6 +9,7 @@ import static org.junit.Assume.assumeNotNull;
 
 import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.controller.Controller;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
@@ -39,6 +40,7 @@ public class Lab02Test {
 
   private static EntityType<?> questionEntity;
 
+  @SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
   private static EntityType<?> answerEntity;
 
   private static Controller controller;
@@ -88,6 +90,7 @@ public class Lab02Test {
     }
   }
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
   public void test1EntityManager() {
     try {
@@ -100,6 +103,7 @@ public class Lab02Test {
     }
   }
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
   public void test2FindCategory() {
     if (metaData == null) {
@@ -123,6 +127,7 @@ public class Lab02Test {
     fail("Could not find Category entity");
   }
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
   public void test3FindQuestion() {
     if (metaData == null) {
@@ -229,6 +234,7 @@ public class Lab02Test {
   }
 
   // Explicitly want to test `equals` implementation; ignore IntelliJ warnings about `equals` misuse
+  @SuppressFBWarnings("EC_NULL_ARG")
   @SuppressWarnings({"SimplifiableAssertion", "EqualsWithItself", "ConstantConditions"})
   private static void assertEqualsImplementation(Object a, Object b) {
     String className = a.getClass().getSimpleName();

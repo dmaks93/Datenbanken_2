@@ -4,6 +4,7 @@ import de.hda.fbi.db2.api.Lab01Data;
 import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.api.Lab03Game;
 import de.hda.fbi.db2.api.Lab04MassData;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -175,14 +176,17 @@ public class Controller {
     return lab01Data;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public Lab02EntityManager getLab02EntityManager() {
     return lab02EntityManager;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public Lab03Game getLab03Game() {
     return lab03Game;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public Lab04MassData getLab04MassData() {
     return lab04MassData;
   }

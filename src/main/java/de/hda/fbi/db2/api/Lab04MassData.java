@@ -1,5 +1,7 @@
 package de.hda.fbi.db2.api;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Api for MassData.
  */
@@ -38,6 +40,7 @@ public abstract class Lab04MassData {
    *
    * @param lab02EntityManager lab02EntityManager
    */
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
     this.lab02EntityManager = lab02EntityManager;
   }
@@ -47,6 +50,7 @@ public abstract class Lab04MassData {
    *
    * @param lab03Game lab03Game
    */
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   public final void setLab03Game(Lab03Game lab03Game) {
     this.lab03Game = lab03Game;
   }
