@@ -16,11 +16,11 @@ public abstract class Lab02EntityManager {
   protected Lab01Data lab01Data;
 
   /**
-   * Setter for Lab01Data; Don't overwrite, you will break the automation.
+   * Setter for Lab01Data. Do not touch this method.
    *
    * @param lab01Data lab01Data
    */
-  public void setLab01Data(Lab01Data lab01Data) {
+  public final void setLab01Data(Lab01Data lab01Data) {
     this.lab01Data = lab01Data;
   }
 

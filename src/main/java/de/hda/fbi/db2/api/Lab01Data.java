@@ -25,9 +25,10 @@ public abstract class Lab01Data {
   public abstract List<?> getCategories();
 
   /**
-   * Save the csv data in appropriate objects.
+   * Save the CSV data in appropriate objects.
    *
-   * @param additionalCsvLines is the csv data
+   * @param csvLines CSV lines, each line is a String array consisting of the columns of the line.
+   *                 The first line consists of the headers of the CSV columns.
    */
-  public abstract void loadCsvFile(List<String[]> additionalCsvLines);
+  public abstract void loadCsvFile(List<String[]> csvLines);
 }

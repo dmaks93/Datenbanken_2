@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class MenuController {
 
-  private Controller controller;
+  private final Controller controller;
 
   public MenuController(Controller controller) {
     this.controller = controller;

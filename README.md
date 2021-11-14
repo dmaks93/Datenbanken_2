@@ -5,7 +5,7 @@ Zu diesem Zweck werden wir Git und GitLab einsetzten. Sollten Sie mehr Informati
 
 In diesem Dokument finden Sie die folgenden Informationen:
 
-- [Fachliche Projektbeschreibung](#fachliche-projectbeschreibung)
+- [Fachliche Projektbeschreibung](#fachliche-projektbeschreibung)
 - [Technische Projektbeschreibung](#technische-projektbeschreibung)
 - [Hinweis zur Autorenschaft](#hinweis-zur-autorenschaft)
 

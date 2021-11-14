@@ -26,16 +26,16 @@ public abstract class Lab03Game {
    *
    * @param lab01Data lab01Data
    */
-  public void setLab01Data(Lab01Data lab01Data) {
+  public final void setLab01Data(Lab01Data lab01Data) {
     this.lab01Data = lab01Data;
   }
 
   /**
-   * Setter fro Lab02EntityManager. Do not touch this method.
+   * Setter for Lab02EntityManager. Do not touch this method.
    *
    * @param lab02EntityManager lab02EntityManager
    */
-  public void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
+  public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
     this.lab02EntityManager = lab02EntityManager;
   }
 
@@ -48,7 +48,7 @@ public abstract class Lab03Game {
    * </p>
    *
    * <p>This function is primarily used for testing. There exists a version with user interaction
-   * which shall be used from the menu
+   * which shall be used from the menu.
    * </p>
    *
    * @param playerName The name for the new Player.
@@ -67,7 +67,7 @@ public abstract class Lab03Game {
    * </p>
    *
    * <p>This function is primarily used for user interaction. There exists a version used for
-   * testing, @see getOrCreatePlayer</p>
+   * testing, {@link #getOrCreatePlayer(String)}.</p>
    *
    * @return Player object which was created or retrieved.
    * @see Lab03Game#getOrCreatePlayer(String)
@@ -116,7 +116,7 @@ public abstract class Lab03Game {
    *
    * @param player    The Player which shall play the game.
    * @param questions The Questions which shall be asked during the game.
-   * @return A Game Object which contains an unplayed game
+   * @return A Game object which contains an unplayed game
    *     for the given player with the given questions.
    */
   public abstract Object createGame(Object player, List<?> questions);
@@ -127,7 +127,7 @@ public abstract class Lab03Game {
    * <p>There is also an interactive version of this function which shall be called from the menu.
    * </p>
    *
-   * @param game The Game Object which shall be played.
+   * @param game The Game object which shall be played.
    * @see Lab03Game#interactivePlayGame(Object)
    */
   public abstract void playGame(Object game);
@@ -138,15 +138,15 @@ public abstract class Lab03Game {
    * <p>This is the function that should be called from the menu. Here you can implement the
    * necessary user interaction for the playing of the game.</p>
    *
-   * @param game The Game Object which shall be played.
+   * @param game The Game object which shall be played.
    * @see Lab03Game#playGame(Object)
    */
   public abstract void interactivePlayGame(Object game);
 
   /**
-   * Persists a played game, including the player which played it.
+   * Persists a played game, including the player who played it.
    *
-   * @param game The Game Object to be persisted.
+   * @param game The Game object to be persisted.
    */
   public abstract void persistGame(Object game);
 }

@@ -1,6 +1,6 @@
 /**
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Package containing internal implementation of this lab project.
+ *
+ * <p><b>MUST NOT BE CHANGED BY STUDENTS</b></p>
  */
 package de.hda.fbi.db2.controller;

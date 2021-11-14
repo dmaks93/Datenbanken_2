@@ -25,29 +25,29 @@ public abstract class Lab04MassData {
   protected Lab03Game lab03Game;
 
   /**
-   * Setter for Lab01Data.
+   * Setter for Lab01Data. Do not touch this method.
    *
    * @param lab01Data lab01Data
    */
-  public void setLab01Data(Lab01Data lab01Data) {
+  public final void setLab01Data(Lab01Data lab01Data) {
     this.lab01Data = lab01Data;
   }
 
   /**
-   * Setter fro Lab02EntityManager.
+   * Setter for Lab02EntityManager.
    *
    * @param lab02EntityManager lab02EntityManager
    */
-  public void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
+  public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
     this.lab02EntityManager = lab02EntityManager;
   }
 
   /**
-   * Setter fro lab03Game.
+   * Setter for lab03Game.
    *
    * @param lab03Game lab03Game
    */
-  public void setLab03Game(Lab03Game lab03Game) {
+  public final void setLab03Game(Lab03Game lab03Game) {
     this.lab03Game = lab03Game;
   }
 

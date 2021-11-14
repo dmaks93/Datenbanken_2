@@ -1,5 +1,11 @@
 package de.hda.fbi.db2.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeNotNull;
+
 import de.hda.fbi.db2.api.Lab01Data;
 import de.hda.fbi.db2.api.Lab03Game;
 import de.hda.fbi.db2.controller.Controller;
@@ -7,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -35,17 +40,18 @@ public class Lab03Test {
   @BeforeClass
   public static void init() {
     controller = Controller.getInstance();
-    if (controller.getLab01Data() == null) {
-      Assert.fail("Could not find Lab01Data Implementation");
-      System.exit(-1);
+    // Skip test class if students have not implemented lab01 or lab02 yet
+    assumeNotNull(controller.getLab01Data(), controller.getLab02EntityManager());
+
+    Lab03Game impl = controller.getLab03Game();
+    if (impl == null) {
+      fail("Could not find Lab02EntityManager implementation");
     }
-    if (controller.getLab02EntityManager() == null) {
-      Assert.fail("Could not find Lab02EntityManager Implementation");
-      System.exit(-1);
-    }
-    if (controller.getLab03Game() == null) {
-      Assert.fail("Could not find Lab03Game Implementation");
-      System.exit(-1);
+
+    String expectedPackage = "de.hda.fbi.db2.stud.impl";
+    // Check startsWith to also allow subpackages
+    if (!impl.getClass().getName().startsWith(expectedPackage + '.')) {
+      fail("Implementation class should be in package " + expectedPackage);
     }
 
     if (!controller.isCsvRead()) {
@@ -58,18 +64,18 @@ public class Lab03Test {
 
     try {
       if (controller.getLab02EntityManager().getEntityManager() == null) {
-        Assert.fail("Lab02EntityManager.getEntityManager() returns null");
+        fail("Lab02EntityManager.getEntityManager() returns null");
       }
       metaData = controller.getLab02EntityManager().getEntityManager().getMetamodel();
     } catch (Exception e) {
-      Assert.fail("Exception during entityManager creation");
+      fail("Exception during entityManager creation");
     }
   }
 
   @Test
   public void test1Functionality() {
     if (metaData == null) {
-      Assert.fail("No MetaModel");
+      fail("No MetaModel");
     }
 
     Lab03Game gameController = controller.getLab03Game();
@@ -77,9 +83,16 @@ public class Lab03Test {
     List<Object> categories = new ArrayList<>();
     categories.add(lab01Data.getCategories().get(0));
     categories.add(lab01Data.getCategories().get(1));
+
     List<?> questions = gameController.getQuestions(categories, 2);
+    assertNotNull(questions);
+    assertFalse("Questions for categories should not be empty", questions.isEmpty());
+    assertTrue("Should at most return 2 questions", questions.size() <= 2);
+
     Object player = gameController.getOrCreatePlayer("PlayerName");
+    assertNotNull(player);
     Object game = gameController.createGame(player, questions);
+    assertNotNull(game);
     gameController.playGame(game);
     gameController.persistGame(game);
   }
@@ -87,7 +100,7 @@ public class Lab03Test {
   @Test
   public void test2FindGameEntity() {
     if (metaData == null) {
-      Assert.fail("No MetaModel");
+      fail("No MetaModel");
     }
 
     Lab03Game gameController = controller.getLab03Game();
@@ -95,41 +108,49 @@ public class Lab03Test {
     List<Object> categories = new ArrayList<>();
     categories.add(lab01Data.getCategories().get(0));
     categories.add(lab01Data.getCategories().get(1));
+
     List<?> questions = gameController.getQuestions(categories, 2);
+    assertNotNull(questions);
+    assertFalse("Questions for categories should not be empty", questions.isEmpty());
+    assertTrue("Should at most return 2 questions", questions.size() <= 2);
+
     Object player = gameController.getOrCreatePlayer("PlayerName");
+    assertNotNull(player);
     Object game = gameController.createGame(player, questions);
+    assertNotNull(game);
 
     boolean gameFound = false;
-    for (EntityType<?> clazzes : metaData.getEntities()) {
-      if (clazzes.getJavaType() == game.getClass()) {
+    for (EntityType<?> classes : metaData.getEntities()) {
+      if (classes.getJavaType() == game.getClass()) {
         gameFound = true;
-        setGameEntity(clazzes);
+        setGameEntity(classes);
       }
     }
 
     if (!gameFound) {
-      Assert.fail("Could not find game class as entity");
+      fail("Could not find Game class as entity");
     }
   }
 
   @Test
   public void test3FindPlayerEntity() {
     if (metaData == null) {
-      Assert.fail("No MetaModel");
+      fail("No MetaModel");
     }
 
     Lab03Game gameController = controller.getLab03Game();
     Object player = gameController.getOrCreatePlayer("PlayerName");
+    assertNotNull(player);
 
     boolean playerFound = false;
-    for (EntityType<?> clazzes : metaData.getEntities()) {
-      if (clazzes.getJavaType() == player.getClass()) {
+    for (EntityType<?> classes : metaData.getEntities()) {
+      if (classes.getJavaType() == player.getClass()) {
         playerFound = true;
       }
     }
 
     if (!playerFound) {
-      Assert.fail("Could not find player class as entity");
+      fail("Could not find Player class as entity");
     }
   }
 }

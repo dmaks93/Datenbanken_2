@@ -1,10 +1,13 @@
 package de.hda.fbi.db2.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -25,7 +28,7 @@ public class CsvDataReader {
 
   /**
    * Lists all available csv files in the resource folder.
-   * <strong>WARNING:</strong> May won't work on your machine
+   * <strong>WARNING:</strong> May not work on your machine
    *
    * @return list of csv filenames
    * @throws IOException        ioException
@@ -45,8 +48,8 @@ public class CsvDataReader {
 
       fileList = Arrays.stream(filenames)
           .filter(File::isFile)
-          .filter(file -> file.getName().endsWith(".csv"))
           .map(File::getName)
+          .filter(name -> name.endsWith(".csv"))
           .collect(Collectors.toList());
     }
 
@@ -56,51 +59,50 @@ public class CsvDataReader {
   /**
    * Reads the given embedded file and returns its content in an accessible form.
    *
-   * @param otherFile filename of csv file in resource folder
+   * @param resourceName filename of CSV file in resource folder
    * @return content of the related file as a list of split strings including the CSV-header at
    *     first position.
-   * @throws URISyntaxException uRISyntaxException
+   * @throws URISyntaxException uriSyntaxException
    * @throws IOException        iOException
    */
-  public static List<String[]> read(String otherFile) throws IOException, URISyntaxException {
+  public static List<String[]> read(String resourceName) throws IOException, URISyntaxException {
     try {
-      if (!getAvailableFiles().contains(otherFile)) {
+      if (!getAvailableFiles().contains(resourceName)) {
         throw new IOException("File not found in Resources.");
       }
     } catch (IOException ioe) {
       throw ioe;
     } catch (Exception e) {
-      log.warning("CsvDataReader.getAvailableFiles() threw a exception."
+      log.warning("CsvDataReader.getAvailableFiles() threw an exception."
           + " Skipping file verification.");
     }
-    final URL resource = CsvDataReader.class.getResource("/" + otherFile);
-    if (resource == null) {
-      throw new IllegalStateException("Unable to find the csv file.");
-    }
-    return readFile(new File(resource.toURI()));
+    return readCsvResource("/" + resourceName);
   }
 
   /**
-   * Reads the embedded <code>Wissenstest_sample200.csv</code> file and returns its content in an
+   * Reads the embedded {@code Wissenstest_sample200.csv} file and returns its content in an
    * accessible form.
    *
    * @return content of the related file as a list of split strings including the CSV-header at
    *     first position.
-   * @throws URISyntaxException uRISyntaxException
+   * @throws URISyntaxException uriSyntaxException
    * @throws IOException        iOException
    */
   public static List<String[]> read() throws URISyntaxException, IOException {
-    final URL resource = CsvDataReader.class.getResource("/Wissenstest_sample200.csv");
-    if (resource == null) {
-      throw new IllegalStateException("Unable to find the csv file.");
-    }
-    return readFile(new File(resource.toURI()));
+    return readCsvResource("/Wissenstest_sample200.csv");
   }
 
-  private static List<String[]> readFile(File file) throws IOException {
-    final List<String> lines = Files.readAllLines(file.toPath());
-    return lines.stream()
-        .map((line) -> line.split(SPLIT_CHARACTER))
-        .collect(Collectors.toList());
+  private static List<String[]> readCsvResource(String resourcePath) throws IOException {
+    InputStream inputStream = CsvDataReader.class.getResourceAsStream(resourcePath);
+    if (inputStream == null) {
+      throw new IllegalArgumentException("Resource '" + resourcePath + "' does not exist");
+    }
+    try (inputStream; BufferedReader reader = new BufferedReader(
+        new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+      return reader.lines()
+          .map(line -> line.split(SPLIT_CHARACTER))
+          .collect(Collectors.toList());
+    }
   }
 }

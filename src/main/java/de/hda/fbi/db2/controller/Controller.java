@@ -6,6 +6,8 @@ import de.hda.fbi.db2.api.Lab03Game;
 import de.hda.fbi.db2.api.Lab04MassData;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,30 +53,50 @@ public class Controller {
     findImplementations();
   }
 
-  @SuppressWarnings("deprecation")
+  private static <T> T createInstance(Class<?> c) throws Exception {
+    if (c.isInterface()) {
+      throw new IllegalArgumentException(
+          "Class " + c.getSimpleName() + " must not be an interface");
+    }
+    if (Modifier.isAbstract(c.getModifiers())) {
+      throw new IllegalArgumentException("Class " + c.getSimpleName() + " must not be abstract");
+    }
+
+    Constructor<?> constructor;
+    try {
+      constructor = c.getConstructor();
+    } catch (NoSuchMethodException e) {
+      throw new IllegalArgumentException(
+          "Class " + c.getSimpleName() + " has no default constructor", e);
+    }
+
+    // Trust that the caller has verified class already
+    @SuppressWarnings("unchecked")
+    T result = (T) constructor.newInstance();
+    return result;
+  }
+
   private void findImplementations() {
     try {
       Enumeration<URL> elements = Thread.currentThread().getContextClassLoader()
-          .getResources(IMPL_PACKAGE_NAME.replace(".", "/"));
+          .getResources(IMPL_PACKAGE_NAME.replace('.', '/'));
       if (!elements.hasMoreElements()) {
         return;
       }
-      String test = elements.nextElement().getFile();
-      List<Class> classes = new ArrayList<>(findClasses(new File(test), IMPL_PACKAGE_NAME));
-      for (Class clazz : classes) {
-        Class interfaces = clazz.getSuperclass();
-        if (interfaces != null) {
-          if (interfaces.getSimpleName().equals(Lab01Data.class.getSimpleName())) {
-            lab01Data = (Lab01Data) clazz.newInstance();
-          } else if (interfaces.getSimpleName()
-              .equals(Lab02EntityManager.class.getSimpleName())) {
-            lab02EntityManager = (Lab02EntityManager) clazz.newInstance();
-          } else if (interfaces.getSimpleName()
-              .equals(Lab03Game.class.getSimpleName())) {
-            lab03Game = (Lab03Game) clazz.newInstance();
-          } else if (interfaces.getSimpleName()
-              .equals(Lab04MassData.class.getSimpleName())) {
-            lab04MassData = (Lab04MassData) clazz.newInstance();
+      // Convert URL -> URI -> File to properly handle special characters or spaces in file path
+      File directory = new File(elements.nextElement().toURI());
+      List<Class<?>> classes = new ArrayList<>(findClasses(directory, IMPL_PACKAGE_NAME));
+      for (Class<?> clazz : classes) {
+        Class<?> superclass = clazz.getSuperclass();
+        if (superclass != null) {
+          if (superclass == Lab01Data.class) {
+            lab01Data = createInstance(clazz);
+          } else if (superclass == Lab02EntityManager.class) {
+            lab02EntityManager = createInstance(clazz);
+          } else if (superclass == Lab03Game.class) {
+            lab03Game = createInstance(clazz);
+          } else if (superclass == Lab04MassData.class) {
+            lab04MassData = createInstance(clazz);
           }
         }
       }
@@ -105,13 +127,13 @@ public class Controller {
       lab04MassData.setLab03Game(lab03Game);
       lab04MassData.init();
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new IllegalStateException("API classes are not implemented correctly", e);
     }
   }
 
-  private List<Class> findClasses(File directory, String packageName)
+  private List<Class<?>> findClasses(File directory, String packageName)
       throws ClassNotFoundException {
-    List<Class> classes = new ArrayList<>();
+    List<Class<?>> classes = new ArrayList<>();
     if (!directory.exists()) {
       return classes;
     }
@@ -144,7 +166,7 @@ public class Controller {
         lab01Data.loadCsvFile(additionalCsvLines);
       }
     } catch (URISyntaxException | IOException e) {
-      e.printStackTrace();
+      throw new RuntimeException("Failed reading CSV data", e);
     }
     isCsvRead = true;
   }
