@@ -7,6 +7,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 public abstract class Lab04MassData {
 
+  /**
+   * Can be overridden to perform additional initialization tasks.
+   */
   public void init() {
   }
 

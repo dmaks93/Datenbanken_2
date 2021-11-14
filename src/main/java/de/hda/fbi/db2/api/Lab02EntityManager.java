@@ -1,14 +1,24 @@
 package de.hda.fbi.db2.api;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * API Class for lab02 Created by l.koehler on 05.08.2019.
  */
 public abstract class Lab02EntityManager {
 
-  public void init() {
-  }
+  /**
+   * Creates the {@link EntityManagerFactory} and stores it in a field. {@link #destroy()} should
+   * then clean up the factory later again.
+   */
+  public abstract void init();
+
+  /**
+   * {@linkplain EntityManagerFactory#close() Closes} the {@code EntityManagerFactory} created by
+   * {@link #init()}.
+   */
+  public abstract void destroy();
 
   /**
    * You can use the data from lab01, this variable will be automatically set.
@@ -25,14 +35,14 @@ public abstract class Lab02EntityManager {
   }
 
   /**
-   * There you have to persist the data in the database.
+   * Here you have to persist the data in the database.
    */
   public abstract void persistData();
 
   /**
-   * Return a valid EntityManager.
+   * Creates a new {@code EntityManager}.
    *
-   * @return EntityManager
+   * @return new EntityManager
    */
   public abstract EntityManager getEntityManager();
 }

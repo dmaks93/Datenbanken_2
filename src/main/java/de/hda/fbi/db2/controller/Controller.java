@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Controller Created by l.koehler on 05.08.2019.
@@ -168,12 +169,31 @@ public class Controller {
     return classes;
   }
 
+  private boolean isMissingLabImplementation(int highestLabNumber) {
+    if (highestLabNumber >= 1 && lab01Data == null) {
+      System.err.println("Could not find Lab01Data implementation");
+      return true;
+    }
+    if (highestLabNumber >= 2 && lab02EntityManager == null) {
+      System.err.println("Could not find Lab02EntityManager implementation");
+      return true;
+    }
+    if (highestLabNumber >= 3 && lab03Game == null) {
+      System.err.println("Could not find Lab03Game implementation");
+      return true;
+    }
+    if (highestLabNumber >= 4 && lab04MassData == null) {
+      System.err.println("Could not find Lab04MassData implementation");
+      return true;
+    }
+    return false;
+  }
+
   /**
-   * reads the csv data.
+   * Reads the CSV data.
    */
   public void readCsv() {
-    if (lab01Data == null) {
-      System.err.println("Could not find Lab01Data Implementation");
+    if (isMissingLabImplementation(1)) {
       return;
     }
     try {
@@ -208,21 +228,10 @@ public class Controller {
   }
 
   /**
-   * starts the main menu.
+   * Starts the main menu.
    */
   public void startMenu() {
-    if (lab01Data == null) {
-      System.err.println("Could not find Lab01Data Implementation");
-      return;
-    }
-
-    if (lab02EntityManager == null) {
-      System.err.println("Could not find Lab02EntityManager Implementation");
-      return;
-    }
-
-    if (lab03Game == null) {
-      System.err.println("Could not find Lab03Game Implementation");
+    if (isMissingLabImplementation(3)) {
       return;
     }
 
@@ -233,21 +242,18 @@ public class Controller {
   }
 
   /**
-   * persist data.
+   * Persists data.
    */
   public void persistData() {
-    if (lab01Data == null) {
-      System.err.println("Could not find Lab01Data Implementation");
+    if (isMissingLabImplementation(2)) {
       return;
     }
 
-    if (lab02EntityManager == null) {
-      System.err.println("Could not find Lab02EntityManager Implementation");
-      return;
-    }
-
-    String schemaGeneration = (String) lab02EntityManager.getEntityManager().getProperties()
+    EntityManager entityManager = lab02EntityManager.getEntityManager();
+    String schemaGeneration = (String) entityManager.getProperties()
         .get("javax.persistence.schema-generation.database.action");
+
+    entityManager.close();
 
     if (schemaGeneration.equals("drop-and-create") || schemaGeneration.equals("create")) {
       lab02EntityManager.persistData();
@@ -264,26 +270,10 @@ public class Controller {
   }
 
   /**
-   * creates massdata.
+   * Creates mass data.
    */
   public void createMassData() {
-    if (lab01Data == null) {
-      System.err.println("Could not find Lab01Data Implementation");
-      return;
-    }
-
-    if (lab02EntityManager == null) {
-      System.err.println("Could not find Lab02EntityManager Implementation");
-      return;
-    }
-
-    if (lab03Game == null) {
-      System.err.println("Could not find Lab03Game Implementation");
-      return;
-    }
-
-    if (lab04MassData == null) {
-      System.err.println("Could not find Lab04MassData Implementation");
+    if (isMissingLabImplementation(4)) {
       return;
     }
 

@@ -2,6 +2,8 @@ package de.hda.fbi.db2.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -11,6 +13,7 @@ import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.controller.Controller;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
@@ -23,6 +26,7 @@ import org.eclipse.persistence.mappings.AggregateCollectionMapping;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.DirectCollectionMapping;
 import org.eclipse.persistence.mappings.DirectMapMapping;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -41,6 +45,8 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class Lab02Test {
 
+  private static EntityManager entityManager;
+
   private static Metamodel metaData;
 
   private static EntityType<?> categoryEntity;
@@ -51,22 +57,6 @@ class Lab02Test {
   private static EntityType<?> answerEntity;
 
   private static Controller controller;
-
-  private static synchronized void setMetaData(Metamodel metaData) {
-    Lab02Test.metaData = metaData;
-  }
-
-  private static synchronized void setCategoryEntity(EntityType<?> categoryEntity) {
-    Lab02Test.categoryEntity = categoryEntity;
-  }
-
-  private static synchronized void setQuestionEntity(EntityType<?> questionEntity) {
-    Lab02Test.questionEntity = questionEntity;
-  }
-
-  private static synchronized void setAnswerEntity(EntityType<?> answerEntity) {
-    Lab02Test.answerEntity = answerEntity;
-  }
 
   /**
    * Lab02Test init.
@@ -93,14 +83,30 @@ class Lab02Test {
     }
   }
 
+  @AfterAll
+  static void cleanUp() {
+    if (entityManager != null) {
+      entityManager.close();
+    }
+  }
+
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Test
   void test1EntityManager() {
     try {
-      if (controller.getLab02EntityManager().getEntityManager() == null) {
-        fail("Lab02EntityManager.getEntityManager() returns null");
-      }
-      setMetaData(controller.getLab02EntityManager().getEntityManager().getMetamodel());
+      Lab02EntityManager lab02EntityManager = controller.getLab02EntityManager();
+
+      entityManager = lab02EntityManager.getEntityManager();
+      assertNotNull(entityManager, "Lab02EntityManager.getEntityManager() returns null");
+      assertTrue(entityManager.isOpen(), "EntityManager should be open");
+
+      // Should create new instances; should not always return the same instance
+      EntityManager otherEntityManager = lab02EntityManager.getEntityManager();
+      assertNotSame(entityManager, otherEntityManager,
+          "Lab02EntityManager.getEntityManager() should create new instances");
+      otherEntityManager.close();
+
+      metaData = entityManager.getMetamodel();
     } catch (Exception e) {
       fail("Exception during entityManager creation", e);
     }
@@ -115,7 +121,7 @@ class Lab02Test {
 
     for (EntityType<?> current : metaData.getEntities()) {
       if (current.getName().equalsIgnoreCase("category")) {
-        setCategoryEntity(current);
+        categoryEntity = current;
 
         List<?> categories = controller.getLab01Data().getCategories();
         if (categories != null && !categories.isEmpty()) {
@@ -139,7 +145,7 @@ class Lab02Test {
 
     for (EntityType<?> current : metaData.getEntities()) {
       if (current.getName().equalsIgnoreCase("question")) {
-        setQuestionEntity(current);
+        questionEntity = current;
 
         List<?> questions = controller.getLab01Data().getQuestions();
         if (questions != null && !questions.isEmpty()) {

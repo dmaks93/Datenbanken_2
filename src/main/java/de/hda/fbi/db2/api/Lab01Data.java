@@ -7,6 +7,9 @@ import java.util.List;
  */
 public abstract class Lab01Data {
 
+  /**
+   * Can be overridden to perform additional initialization tasks.
+   */
   public void init() {
   }
 

@@ -12,8 +12,10 @@ import de.hda.fbi.db2.controller.Controller;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -32,15 +34,13 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class Lab03Test {
 
+  private static EntityManager entityManager;
+
   private static Metamodel metaData;
 
   private static Controller controller;
 
   private static EntityType<?> gameEntity;
-
-  private static synchronized void setGameEntity(EntityType<?> gameEntity) {
-    Lab03Test.gameEntity = gameEntity;
-  }
 
   /**
    * Lab03Test init.
@@ -67,12 +67,18 @@ class Lab03Test {
     }
 
     try {
-      if (controller.getLab02EntityManager().getEntityManager() == null) {
-        fail("Lab02EntityManager.getEntityManager() returns null");
-      }
-      metaData = controller.getLab02EntityManager().getEntityManager().getMetamodel();
+      entityManager = controller.getLab02EntityManager().getEntityManager();
+      assertNotNull(entityManager, "Lab02EntityManager.getEntityManager() returns null");
+      metaData = entityManager.getMetamodel();
     } catch (Exception e) {
-      fail("Exception during entityManager creation");
+      fail("Exception during entityManager creation", e);
+    }
+  }
+
+  @AfterAll
+  static void cleanUp() {
+    if (entityManager != null) {
+      entityManager.close();
     }
   }
 
@@ -128,7 +134,7 @@ class Lab03Test {
     for (EntityType<?> classes : metaData.getEntities()) {
       if (classes.getJavaType() == game.getClass()) {
         gameFound = true;
-        setGameEntity(classes);
+        gameEntity = classes;
       }
     }
 

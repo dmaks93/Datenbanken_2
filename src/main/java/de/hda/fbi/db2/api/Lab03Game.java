@@ -8,6 +8,9 @@ import java.util.List;
  */
 public abstract class Lab03Game {
 
+  /**
+   * Can be overridden to perform additional initialization tasks.
+   */
   public void init() {
   }
 
