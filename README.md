@@ -48,7 +48,7 @@ Haben mehrere Spieler das Spiel gespielt, so gibt es die Möglichkeit, Analysen 
 
 ## Projektrahmen
 
-Im diesem Repository finden Sie einen Projektrahmen, den Sie für die Implementierung des gesamten Projektes verwenden sollen. Unter anderem bringt er eine Package-Struktur mit, in die Sie Ihren Code einfügen sollen. Konkret heißt dies, dass alle von Ihnen erzeugten Klassen in `de.hda.fbi.db2.stud` oder von ihnen erstellte Unterordner in dem Package zu erstellen sind.
+In diesem Repository finden Sie einen Projektrahmen, den Sie für die Implementierung des gesamten Projektes verwenden sollen. Unter anderem bringt er eine Package-Struktur mit, in die Sie Ihren Code einfügen sollen. Konkret heißt dies, dass alle von Ihnen erzeugten Klassen in `de.hda.fbi.db2.stud` oder von ihnen erstellte Unterordner in dem Package zu erstellen sind.
 
 Viele Teile des eigentlichen Wissenstests als Spiel sind bereits vorgegeben, beziehungsweise implementiert. Schauen Sie sich die abstrakten Klassen in dem Package `de.hda.fbi.db2.api` an. Ihre Aufgabe besteht darin für jedes Praktikum eine Implementierung (Unterklasse) für diese zur Verfügung zu stellen. Ihre Implementierung muss innerhalb oder unterhalb des Packages `de.hda.fbi.db2.stud` sein. Lesen Sie sich genaustens die JavaDoc Kommentare in den abstrakten Klassen durch.
 In der Klasse `Main`, müssen Sie für jeweilige Praktika gegebenenfalls Codezeilen aus- beziehungsweise einkommentieren.
@@ -56,9 +56,9 @@ In der Klasse `Main`, müssen Sie für jeweilige Praktika gegebenenfalls Codezei
 Darüber hinaus, bringt der Projektrahmen noch die folgenden Dinge mit:
 
 - Gradle Projekt: Fertiges Projekt, damit Sie direkt mit der Entwicklung anfangen können. Weitere Informationen zu Gradle finden Sie [hier](https://gradle.org/)
-- Vorbereitete JPA Ressourcen (z.B. `persistance.xml`)
+- Vorbereitete JPA Ressourcen (z.B. `persistence.xml`)
 - Datenbasis als `csv`-Datei. Die Datei finden Sie im Unterordner `/src/main/resources/Wissenstest_sample200.csv`
-- Parser für die Datenbasis. Sie finden diesen im Package: `de.hda.fbi.db2.controller.CsvDataReader`
+- Parser für die Datenbasis. Der Klassenname ist: `de.hda.fbi.db2.controller.CsvDataReader`
 - CI/CD Pipeline (details siehe unten) zum Bauen und Testen Ihres Projektes auf dem GitLab Server
 
 Weitere Hinweise wie sie das Projekt bei sich Lokal clonen und in IntelliJ verwenden finden sie [hier](readme/gitandgitlab.md)
@@ -72,7 +72,7 @@ Sie benötigen für dieses Praktikum die [IDE IntelliJ](https://www.jetbrains.co
 
 Wir empfehlen, zusätzlich zum in IntelliJ integrierten Git-Client die Software TortoiseGIT zu installieren:
 
-- Unter Windows: [TortoiseGIT](https://tortoisegit.org/) integriert sich in den Windows-Explorer, sodass alle Funktionen im Explorer über das Kontextmenü (rechte Maustaste) aufrufbar sind. Zur Nutzung von TortoiseGIT benötigen Sie außerdem GitForWindows.
+- Unter Windows: [TortoiseGIT](https://tortoisegit.org/) integriert sich in den Windows-Explorer, sodass alle Funktionen im Explorer über das Kontextmenü (rechte Maustaste) aufrufbar sind. Zur Nutzung von TortoiseGIT benötigen Sie außerdem [GitForWindows](https://gitforwindows.org/).
 - Falls Sie Linux verwenden, installieren Sie ein git package Ihrer Wahl. Aber, ganz ehrlich, wenn Sie Linux verwenden, wissen Sie genau was zu tun ist.
 
 ## Continuous Integration Pipeline
@@ -87,7 +87,7 @@ Die Pipeline verwendet die folgenden zwei Tools:
 
 ## Nutzen der Checkstyle und Spotbugs in IntelliJ
 
-Bevor Sie ihren Code zum GitLab-Server pushen, sollten Sie local mit Hilfe von Spotbugs und Checkstyle überprüfen lassen ob die Pipeline Fehler finden wird. Dafür rufen Sie einfach in IntelliJ den Gradle task `build` auf. In der Konsolenausgabe werden entsprechende Fehler angezeigt.
+Bevor Sie ihren Code zum GitLab-Server pushen, sollten Sie local mit Hilfe von Spotbugs und Checkstyle überprüfen lassen, ob die Pipeline Fehler finden wird. Dafür rufen Sie einfach in IntelliJ den Gradle task `build` auf. In der Konsolenausgabe werden entsprechende Fehler angezeigt.
 
 Erzeugte Reports finden Sie lokal im Projekt unter `/build/reports/`.
 
