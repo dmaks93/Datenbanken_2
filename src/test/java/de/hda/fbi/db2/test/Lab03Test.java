@@ -97,7 +97,7 @@ class Lab03Test {
     List<?> questions = gameController.getQuestions(categories, 2);
     assertNotNull(questions);
     assertFalse(questions.isEmpty(), "Questions for categories should not be empty");
-    assertTrue(questions.size() <= 2, "Should at most return 2 questions");
+    assertTrue(questions.size() <= 4, "Should at most return 4 questions, 2 per category");
 
     Object player = gameController.getOrCreatePlayer("PlayerName");
     assertNotNull(player);
@@ -123,7 +123,7 @@ class Lab03Test {
     List<?> questions = gameController.getQuestions(categories, 2);
     assertNotNull(questions);
     assertFalse(questions.isEmpty(), "Questions for categories should not be empty");
-    assertTrue(questions.size() <= 2, "Should at most return 2 questions");
+    assertTrue(questions.size() <= 4, "Should at most return 4 questions, 2 per category");
 
     Object player = gameController.getOrCreatePlayer("PlayerName");
     assertNotNull(player);
