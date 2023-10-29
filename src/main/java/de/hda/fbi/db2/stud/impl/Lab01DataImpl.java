@@ -26,7 +26,8 @@ public class Lab01DataImpl extends Lab01Data {
   public void loadCsvFile(List<String[]> csvLines) {
     boolean firstRow = true;
     List<Answer> answerBuffer;
-    Category categoryBuffer;
+    Category categoryBuffer = null;
+    Question questionBuffer = null;
 
     for (String[] row : csvLines
     ) {
@@ -37,21 +38,24 @@ public class Lab01DataImpl extends Lab01Data {
           answerBuffer.add(new Answer(row[i]));
         }
 
-        categoryBuffer = new Category(row[7]);
+
         boolean duplicate = false;
         for (Category cat: categoryList
         ) {
-          if (Objects.equals(cat.getName(), categoryBuffer.getName())) {
-            categoryBuffer = categoryList.get(categoryList.size() - 1);
+          if (Objects.equals(cat.getName(), row[7])) {
+            categoryBuffer = cat;
             duplicate = true;
             break;
           }
         }
         if (!duplicate) {
+          categoryBuffer = new Category(row[7]);
           categoryList.add(categoryBuffer);
         }
-        questionList.add(new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
-            Integer.parseInt(row[6]), categoryBuffer));
+        questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
+            Integer.parseInt(row[6]), categoryBuffer);
+        questionList.add(questionBuffer);
+        categoryBuffer.addQuestion(questionBuffer);
       } else {
         firstRow = false;
       }
