@@ -8,10 +8,22 @@ public class Question {
   private List<Answer> answerList;
   private int correctAnswer;
   private Category questionCategory;
-  public Question() {
-  }
 
-  public Question(int id, String text, List<Answer> answerList, int correctAnswer, Category questionCategory) {
+  /**
+   * Empty constructor for question.
+   */
+  public Question() {}
+
+  /**
+   * Constructor for question.
+   * @param id question id
+   * @param text question text
+   * @param answerList list of possible answers (4 items)
+   * @param correctAnswer index of the correct answer
+   * @param questionCategory category of the question
+   */
+  public Question(int id, String text, List<Answer> answerList, int correctAnswer,
+      Category questionCategory) {
     this.id = id;
     this.text = text;
     this.answerList = answerList;
@@ -19,6 +31,11 @@ public class Question {
     this.questionCategory = questionCategory;
   }
 
+  /**
+   * check if the provided answer is correct.
+   * @param index the index of the correct answer
+   * @return weather the answer is correct or not
+   */
   public boolean checkAnswer(int index) {
     return this.correctAnswer == index;
   }
@@ -60,6 +77,10 @@ public class Question {
     questionCategory = cat;
   }
 
+  /**
+   * returns the name string of the category.
+   * @return the name of the category
+   */
   public String getQuestionCategory() {
     return questionCategory.getName();
   }
