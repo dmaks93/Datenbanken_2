@@ -60,5 +60,32 @@ public class Lab01DataImpl extends Lab01Data {
         firstRow = false;
       }
     }
+
+    // print out
+
+    for (Category c : categoryList) {
+      String catName = c.getName() + ": ";
+
+      System.out.print(catName);
+      System.out.print("\n");
+
+      List<Question> catQuestions = c.getQuestionList();
+
+      for (Question q : catQuestions) {
+        int questionId = q.getId();
+        System.out.print("ID: " + questionId + ": " + q.getText());
+        System.out.print("\n");
+        System.out.print("Possible Answers: " + "\n");
+
+        List<Answer> questionAnswer = q.getAnswerList();
+        for (int i = 0; i < questionAnswer.size(); i++) {
+          System.out.print("Answer " + i++ + " " + questionAnswer.get(i).getText() + "\n");
+        }
+        System.out.print("Correct Answer is: ");
+        System.out.print(q.getCorrectAnswer() + 1);
+        System.out.print("\n");
+      }
+
+    }
   }
 }
