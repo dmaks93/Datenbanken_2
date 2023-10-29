@@ -27,7 +27,7 @@ public class Lab01DataImpl extends Lab01Data {
     boolean firstRow = true;
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
-    Question questionBuffer = null;
+    Question questionBuffer;
 
     for (String[] row : csvLines
     ) {
@@ -66,7 +66,7 @@ public class Lab01DataImpl extends Lab01Data {
     for (Category c : categoryList) {
       String catName = c.getName() + ": ";
 
-      System.out.print(catName);
+      System.out.print("Category --> " + catName);
       System.out.print("\n");
 
       List<Question> catQuestions = c.getQuestionList();
@@ -79,11 +79,11 @@ public class Lab01DataImpl extends Lab01Data {
 
         List<Answer> questionAnswer = q.getAnswerList();
         for (int i = 0; i < questionAnswer.size(); i++) {
-          System.out.print("Answer " + i++ + " " + questionAnswer.get(i).getText() + "\n");
+          System.out.print("Answer " + i + " " + questionAnswer.get(i).getText() + "\n");
         }
         System.out.print("Correct Answer is: ");
-        System.out.print(q.getCorrectAnswer() + 1);
-        System.out.print("\n");
+        System.out.print(q.getCorrectAnswer());
+        System.out.print("\n\n");
       }
 
     }
