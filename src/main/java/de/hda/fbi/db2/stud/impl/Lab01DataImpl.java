@@ -79,13 +79,12 @@ public class Lab01DataImpl extends Lab01Data {
 
         List<Answer> questionAnswer = q.getAnswerList();
         for (int i = 0; i < questionAnswer.size(); i++) {
-          System.out.print("Answer " + i + " " + questionAnswer.get(i).getText() + "\n");
+          System.out.print("Answer " + i + " --> " + questionAnswer.get(i).getText() + "\n");
         }
         System.out.print("Correct Answer is: ");
         System.out.print(q.getCorrectAnswer());
         System.out.print("\n\n");
       }
-
     }
   }
 }
