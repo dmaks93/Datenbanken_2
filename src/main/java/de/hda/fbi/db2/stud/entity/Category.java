@@ -25,6 +25,10 @@ public class Category {
     return questionList;
   }
 
+  /**
+   * Add a question to the category.
+   * @param question the question to be added
+   */
   public void addQuestion(Question question) {
     questionList.add(question);
   }

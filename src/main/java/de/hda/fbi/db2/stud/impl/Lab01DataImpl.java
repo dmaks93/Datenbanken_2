@@ -29,8 +29,7 @@ public class Lab01DataImpl extends Lab01Data {
     Category categoryBuffer = null;
     Question questionBuffer;
 
-    for (String[] row : csvLines
-    ) {
+    for (String[] row : csvLines) {
       if (!firstRow) {
 
         answerBuffer = new ArrayList<>();
@@ -40,8 +39,7 @@ public class Lab01DataImpl extends Lab01Data {
 
 
         boolean duplicate = false;
-        for (Category cat: categoryList
-        ) {
+        for (Category cat: categoryList) {
           if (Objects.equals(cat.getName(), row[7])) {
             categoryBuffer = cat;
             duplicate = true;
