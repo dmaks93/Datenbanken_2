@@ -35,13 +35,14 @@ public class Lab01DataImpl extends Lab01Data {
       if (!firstRow) {
 
         answerBuffer = new ArrayList<>();
-        for (int i = 2; i < 6; i++) {
-          answerBuffer.add(new Answer(row[i]));
-        }
-        // Question Category Match
         categoryBuffer = loadCategory(row[7]);
         questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
             Integer.parseInt(row[6]), categoryBuffer);
+
+        for (int i = 2; i < 6; i++) {
+          answerBuffer.add(new Answer(row[i]));
+          answerBuffer.setQuestion(questionBuffer);
+        }
         questionList.add(questionBuffer);
         categoryBuffer.addQuestion(questionBuffer);
 
