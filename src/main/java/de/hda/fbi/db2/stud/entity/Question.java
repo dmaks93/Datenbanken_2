@@ -76,7 +76,7 @@ public class Question {
    * returns the name string of the category.
    * @return the name of the category
    */
-  public String getQuestionCategory() {
-    return questionCategory.getName();
+  public Category getQuestionCategory() {
+    return questionCategory;
   }
 }

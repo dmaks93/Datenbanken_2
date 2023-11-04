@@ -37,6 +37,17 @@ public class Category {
   public void addQuestion(Question question) {
     questionList.add(question);
   }
+
+  /** delete a question by id.
+   * @param id id of the question to delete
+   */
+  public void removeQuestion(int id) {
+    for (int i = 0; i < questionList.size(); i++) {
+      if (questionList.get(i).getId() == id) {
+        questionList.remove(i);
+      }
+    }
+  }
 }
 
 
