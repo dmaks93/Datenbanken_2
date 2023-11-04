@@ -8,9 +8,7 @@ public class Category {
   private String name;
   private List<Question> questionList;
 
-  public Category() {
-
-  }
+  public Category() {}
 
   /**
    * constructor for categories.
