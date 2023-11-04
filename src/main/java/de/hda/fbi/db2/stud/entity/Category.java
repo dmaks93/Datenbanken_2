@@ -8,8 +8,6 @@ public class Category {
   private String name;
   private List<Question> questionList;
 
-  public Category() {}
-
   /**
    * constructor for categories.
    * @param name category name

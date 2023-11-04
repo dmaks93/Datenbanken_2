@@ -3,9 +3,7 @@ package de.hda.fbi.db2.stud.entity;
 public class Answer {
   private String text;
 
-  public  Answer() {
-
-  }
+  private Question question;
 
   public Answer(String text) {
     this.text = text;
@@ -18,5 +16,13 @@ public class Answer {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  public Question getQuestion() {
+    return question;
+  }
+
+  public void setQuestion(Question question) {
+    this.question = question;
   }
 }

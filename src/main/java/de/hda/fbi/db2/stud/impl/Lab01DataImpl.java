@@ -41,7 +41,9 @@ public class Lab01DataImpl extends Lab01Data {
 
         for (int i = 2; i < 6; i++) {
           answerBuffer.add(new Answer(row[i]));
-          answerBuffer.setQuestion(questionBuffer);
+        }
+        for (Answer a: answerBuffer) {
+          a.setQuestion(questionBuffer);
         }
         questionList.add(questionBuffer);
         categoryBuffer.addQuestion(questionBuffer);

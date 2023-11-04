@@ -10,11 +10,6 @@ public class Question {
   private Category questionCategory;
 
   /**
-   * Empty constructor for question.
-   */
-  public Question() {}
-
-  /**
    * Constructor for question.
    * @param id question id
    * @param text question text
