@@ -31,7 +31,6 @@ public class Lab01DataImpl extends Lab01Data {
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
     Question questionBuffer;
-    int catId = 0;
     for (String[] row : csvLines) {
       if (!firstRow) {
 
@@ -39,13 +38,13 @@ public class Lab01DataImpl extends Lab01Data {
         for (int i = 2; i < 6; i++) {
           answerBuffer.add(new Answer(row[i]));
         }
-
+        // Question Category Match
         categoryBuffer = loadCategory(row[7]);
-
         questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
             Integer.parseInt(row[6]), categoryBuffer);
         questionList.add(questionBuffer);
         categoryBuffer.addQuestion(questionBuffer);
+
       } else {
         firstRow = false;
       }
