@@ -1,12 +1,15 @@
 package de.hda.fbi.db2.stud.impl;
 
+
 import de.hda.fbi.db2.api.Lab01Data;
 import de.hda.fbi.db2.stud.entity.Answer;
 import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+
+
 
 public class Lab01DataImpl extends Lab01Data {
   List<Question> questionList = new ArrayList<>();
@@ -28,7 +31,7 @@ public class Lab01DataImpl extends Lab01Data {
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
     Question questionBuffer;
-
+    int catId = 0;
     for (String[] row : csvLines) {
       if (!firstRow) {
 
@@ -37,19 +40,8 @@ public class Lab01DataImpl extends Lab01Data {
           answerBuffer.add(new Answer(row[i]));
         }
 
+        categoryBuffer = loadCategory(row[7]);
 
-        boolean duplicate = false;
-        for (Category cat: categoryList) {
-          if (Objects.equals(cat.getName(), row[7])) {
-            categoryBuffer = cat;
-            duplicate = true;
-            break;
-          }
-        }
-        if (!duplicate) {
-          categoryBuffer = new Category(row[7]);
-          categoryList.add(categoryBuffer);
-        }
         questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
             Integer.parseInt(row[6]), categoryBuffer);
         questionList.add(questionBuffer);
@@ -58,9 +50,13 @@ public class Lab01DataImpl extends Lab01Data {
         firstRow = false;
       }
     }
+    this.printOut();
+  }
 
-    // print out
-
+  /**
+   * prints out all questions in categories.
+   */
+  public void printOut() {
     for (Category c : categoryList) {
       String catName = c.getName() + ": ";
 
@@ -83,6 +79,26 @@ public class Lab01DataImpl extends Lab01Data {
         System.out.print(q.getCorrectAnswer());
         System.out.print("\n\n");
       }
+    }
+    System.out.print("There are: " + categoryList.size() + " Categories and "
+        + questionList.size() + " Questions\n\n");
+  }
+
+  /**
+   * searches the desired category with O(log n) and inserts new categories with O(n).
+   * @param catName name of the desired category
+   * @return reference to the desired category
+   */
+  public Category loadCategory(String catName) {
+    Category category;
+    category = new Category(catName);
+    int position = Collections.binarySearch(categoryList, category, new CategoryComparator());
+    if (position >= 0) { // Wenn Element gefunden
+      return categoryList.get(position);
+    } else {
+      position = -position - 1;
+      categoryList.add(position, category);
+      return category;
     }
   }
 }

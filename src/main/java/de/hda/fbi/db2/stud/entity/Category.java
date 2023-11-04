@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
+  private int id;
   private String name;
   private List<Question> questionList;
 
+  /**
+   * constructor for categories.
+   * @param name category name
+   */
   public Category(String name) {
     this.name = name;
     this.questionList = new ArrayList<>();
