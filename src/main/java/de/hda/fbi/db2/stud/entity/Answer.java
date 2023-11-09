@@ -25,4 +25,12 @@ public class Answer {
   public void setQuestion(Question question) {
     this.question = question;
   }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 }
