@@ -105,13 +105,4 @@ public class Lab01DataImpl extends Lab01Data {
     }
   }
 }
-    /*int position = Collections.binarySearch(categoryList, category, new CategoryComparator());
-    if (position >= 0) { // Wenn Element gefunden
-      return categoryList.get(position);
-    } else {
-      position = -position - 1;
-      categoryList.add(position, category);
-      return category;
-    }
-  }*/
 

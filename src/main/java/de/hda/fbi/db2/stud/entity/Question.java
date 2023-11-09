@@ -1,6 +1,7 @@
 package de.hda.fbi.db2.stud.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
   private int id;
@@ -78,5 +79,24 @@ public class Question {
    */
   public Category getQuestionCategory() {
     return questionCategory;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Question question = (Question) o;
+    return id == question.id && correctAnswer == question.correctAnswer && Objects.equals(
+        text, question.text) && Objects.equals(answerList, question.answerList)
+        && Objects.equals(questionCategory, question.questionCategory);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, text, answerList, correctAnswer, questionCategory);
   }
 }
