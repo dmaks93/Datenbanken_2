@@ -92,14 +92,15 @@ public class Lab01DataImpl extends Lab01Data {
    * @return reference to the desired category
    */
   public Category loadCategory(String catName) {
-    Category category;
-    category = new Category(catName);
-    int position = Collections.binarySearch(categoryList, category, new CategoryComparator());
+    Category category = new Category(catName);
+    int position = Collections.binarySearch(categoryList, category, new CategoryComparator()); // O(log n)
+
     if (position >= 0) { // Wenn Element gefunden
       return categoryList.get(position);
-    } else {
+    }
+    else {
       position = -position - 1;
-      categoryList.add(position, category);
+      categoryList.add(position, category); // O(n)
       return category;
     }
   }
