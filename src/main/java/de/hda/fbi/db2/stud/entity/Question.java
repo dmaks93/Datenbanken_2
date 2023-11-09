@@ -8,7 +8,7 @@ public class Question {
   private String text;
   private List<Answer> answerList;
   private int correctAnswer;
-  private Category questionCategory;
+  private Category category;
 
   /**
    * Constructor for question.
@@ -16,15 +16,15 @@ public class Question {
    * @param text question text
    * @param answerList list of possible answers (4 items)
    * @param correctAnswer index of the correct answer
-   * @param questionCategory category of the question
+   * @param category category of the question
    */
   public Question(int id, String text, List<Answer> answerList, int correctAnswer,
-      Category questionCategory) {
+      Category category) {
     this.id = id;
     this.text = text;
     this.answerList = answerList;
     this.correctAnswer = correctAnswer;
-    this.questionCategory = questionCategory;
+    this.category = category;
   }
 
   /**
@@ -69,16 +69,16 @@ public class Question {
     this.correctAnswer = correctAnswer;
   }
 
-  public void setQuestionCategory(Category cat) {
-    questionCategory = cat;
+  public void setCategory(Category cat) {
+    category = cat;
   }
 
   /**
    * returns the name string of the category.
    * @return the name of the category
    */
-  public Category getQuestionCategory() {
-    return questionCategory;
+  public Category getCategory() {
+    return category;
   }
 
   @Override
@@ -92,11 +92,11 @@ public class Question {
     Question question = (Question) o;
     return id == question.id && correctAnswer == question.correctAnswer && Objects.equals(
         text, question.text) && Objects.equals(answerList, question.answerList)
-        && Objects.equals(questionCategory, question.questionCategory);
+        && Objects.equals(category, question.category);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, answerList, correctAnswer, questionCategory);
+    return Objects.hash(id, text, answerList, correctAnswer, category);
   }
 }

@@ -1,0 +1,54 @@
+// Important imports:
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+
+// JPA Annotations for entity classes:
+
+@Entity
+public class Answer {
+   @Id
+   private int id;
+
+   // ... further attributes
+
+   @ManyToOne
+   @JoinColumn(name = "question_id")
+   private Question question;
+
+   // ... further code
+
+}
+
+@Entity
+public class Question {
+   @Id
+   private int id;
+
+   // ... further attributes
+
+   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+   private List<Answer> answerList;
+
+   @JoinColumn(name = "category_id")
+   private Category category;
+
+   // ... further code
+}
+
+@Entity
+public class Category {
+   @Id
+   private int id;
+
+   // ... further attributes
+
+   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+   private List<Question> questionList;
+
+   // ... further code
+}
