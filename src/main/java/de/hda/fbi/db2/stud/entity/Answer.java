@@ -1,6 +1,7 @@
 package de.hda.fbi.db2.stud.entity;
 
 public class Answer {
+  private int id;
   private String text;
   private Question question;
 
