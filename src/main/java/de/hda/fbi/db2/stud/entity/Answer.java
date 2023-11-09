@@ -5,8 +5,9 @@ public class Answer {
   private String text;
   private Question question;
 
-  public Answer(String text) {
+  public Answer(int id, String text) {
     this.text = text;
+    this.id = id;
   }
 
   /* -------Getter and Setter-------------*/
