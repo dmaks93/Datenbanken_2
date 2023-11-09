@@ -7,22 +7,23 @@ import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class Lab01DataImpl extends Lab01Data {
-  List<Question> questionList = new ArrayList<>();
-  List<Category> categoryList = new ArrayList<>();
+  HashMap<Integer, Question> questionList = new HashMap<>();
+  HashMap<String, Category> categoryList = new HashMap<>();
 
   @Override
   public List<Question> getQuestions() {
-    return questionList;
+    return new ArrayList<>(questionList.values());
   }
 
   @Override
   public List<Category> getCategories() {
-    return categoryList;
+    return new ArrayList<>(categoryList.values());
   }
 
   @Override
@@ -45,7 +46,7 @@ public class Lab01DataImpl extends Lab01Data {
         for (Answer a: answerBuffer) {
           a.setQuestion(questionBuffer);
         }
-        questionList.add(questionBuffer);
+        questionList.put(questionBuffer.getId(), questionBuffer);
         categoryBuffer.addQuestion(questionBuffer);
 
       } else {
@@ -59,13 +60,13 @@ public class Lab01DataImpl extends Lab01Data {
    * prints out all questions in categories.
    */
   public void printOut() {
-    for (Category c : categoryList) {
-      String catName = c.getName() + ": ";
+    for (Map.Entry<String, Category> c: categoryList.entrySet()) {
+      String catName = c.getValue().getName() + ": ";
 
       System.out.print("Category --> " + catName);
       System.out.print("\n");
 
-      List<Question> catQuestions = c.getQuestionList();
+      List<Question> catQuestions = c.getValue().getQuestionList();
 
       for (Question q : catQuestions) {
         int questionId = q.getId();
@@ -87,21 +88,28 @@ public class Lab01DataImpl extends Lab01Data {
   }
 
   /**
-   * searches the desired category with O(log n) and inserts new categories with O(n).
+   * searches the desired category and inserts new category.
    * @param catName name of the desired category
    * @return reference to the desired category
    */
   public Category loadCategory(String catName) {
-    Category category = new Category(catName);
-    int position = Collections.binarySearch(categoryList, category, new CategoryComparator()); // O(log n)
-
-    if (position >= 0) { // Wenn Element gefunden
-      return categoryList.get(position);
-    }
-    else {
-      position = -position - 1;
-      categoryList.add(position, category); // O(n)
+    if (categoryList.containsKey(catName)) {
+      return categoryList.get(catName);
+    } else {
+      Category category;
+      category = new Category(catName);
+      categoryList.put(catName, category);
       return category;
     }
   }
 }
+    /*int position = Collections.binarySearch(categoryList, category, new CategoryComparator());
+    if (position >= 0) { // Wenn Element gefunden
+      return categoryList.get(position);
+    } else {
+      position = -position - 1;
+      categoryList.add(position, category);
+      return category;
+    }
+  }*/
+
