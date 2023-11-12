@@ -6,9 +6,11 @@ import java.util.Objects;
 public class Question {
   private int id;
   private String text;
-  private List<Answer> answerList;
   private int correctAnswer;
+  private List<Answer> answerList;
   private Category category;
+
+  public Question () {};
 
   /**
    * Constructor for question.
@@ -27,6 +29,14 @@ public class Question {
     this.category = category;
   }
 
+  public int getId() {
+    return id;
+  }
+
+  public String getText() {
+    return text;
+  }
+
   /**
    * check if the provided answer is correct.
    * @param index the index of the correct answer
@@ -36,49 +46,40 @@ public class Question {
     return this.correctAnswer == index;
   }
 
-  /* -------Getter and Setter-------------*/
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public List<Answer> getAnswerList() {
-    return answerList;
-  }
-
-  public void setAnswerList(List<Answer> answerList) {
-    this.answerList = answerList;
-  }
-
-  public int getCorrectAnswer() {
-    return correctAnswer;
-  }
-
-  public void setCorrectAnswer(int correctAnswer) {
-    this.correctAnswer = correctAnswer;
-  }
-
-  public void setCategory(Category cat) {
-    category = cat;
-  }
-
   /**
    * returns the name string of the category.
    * @return the name of the category
    */
   public Category getCategory() {
     return category;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public void setCorrectAnswer(int correctAnswer) {
+    this.correctAnswer = correctAnswer;
+  }
+
+  public void setAnswerList(List<Answer> answerList) {
+    this.answerList = answerList;
+  }
+
+  public List<Answer> getAnswerList() {
+    return answerList;
+  }
+
+  public void setCategory(Category cat) {
+    category = cat;
+  }
+
+  public int getCorrectAnswer() {
+    return correctAnswer;
   }
 
   @Override

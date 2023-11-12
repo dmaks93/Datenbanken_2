@@ -68,7 +68,7 @@ public class Lab01DataImpl extends Lab01Data {
       System.out.print("Category --> " + catName);
       System.out.print("\n");
 
-      List<Question> catQuestions = c.getValue().getQuestionList();
+      List<Question> catQuestions = c.getValue().getQuestions();
 
       for (Question q : catQuestions) {
         int questionId = q.getId();

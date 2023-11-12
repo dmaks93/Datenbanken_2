@@ -10,45 +10,55 @@ import javax.persistence.CascadeType;
 // JPA Annotations for entity classes:
 
 @Entity
-public class Answer {
+@Table(name = "Category", schema = "db2")
+@OrderBy("id ASC") // Order by id in ascending order
+public class Category {
    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY) But we have to make changes in implementation itsef. What do you think?
    private int id;
 
-   // ... further attributes
+   private String name;
 
-   @ManyToOne
-   @JoinColumn(name = "question_id")
-   private Question question;
+   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+       private List<Question> questionList;
 
-   // ... further code
-
+   // Constructors, getters, setters, and other methods
 }
 
 @Entity
+@Table(name = "Question", schema = "db2")
+@OrderBy("id ASC") // Order by id in ascending order
 public class Question {
    @Id
    private int id;
 
-   // ... further attributes
+    private String text;
+    private int correctAnswer;
 
    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
    private List<Answer> answerList;
 
-   @JoinColumn(name = "category_id")
+   @ManyToOne
+   @JoinColumn(name = "categoryId", nullable = false)
    private Category category;
 
-   // ... further code
+   // Constructors, getters, setters, and other methods
 }
 
 @Entity
-public class Category {
+@Table(name = "Answer", schema = "db2")
+@OrderBy("id ASC") // Order by id in ascending order
+public class Answer {
    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY) // But we have to make changes in implementation itsef. What do you think?
    private int id;
 
-   // ... further attributes
+   private String text;
 
-   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-   private List<Question> questionList;
+   @ManyToOne
+   @JoinColumn(name = "questionId", nullable = false)
+   private Question question;
 
-   // ... further code
+   // Constructors, getters, setters, and other method
+
 }

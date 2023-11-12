@@ -7,6 +7,8 @@ public class Answer {
   private String text;
   private Question question;
 
+  public Answer () {};
+  
   public Answer(int id, String text) {
     this.text = text;
     this.id = id;

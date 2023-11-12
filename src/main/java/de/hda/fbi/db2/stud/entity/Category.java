@@ -9,6 +9,8 @@ public class Category {
   private String name;
   private List<Question> questionList;
 
+  public Category () {};
+
   /**
    * constructor for categories.
    * @param name category name
@@ -28,7 +30,7 @@ public class Category {
     this.name = name;
   }
 
-  public List<Question> getQuestionList() {
+  public List<Question> getQuestions() {
     return questionList;
   }
 
