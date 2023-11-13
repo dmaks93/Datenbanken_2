@@ -5,7 +5,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+
+import de.hda.fbi.db2.stud.entity.Answer;
+import de.hda.fbi.db2.stud.entity.Question;
 import de.hda.fbi.db2.stud.impl.Lab01DataImpl;
+
+import java.util.List;
 
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
 
@@ -43,6 +48,8 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
 
       // code here
 
+      List<Question> l1 = (List<Question>) lab01Data.getQuestions();
+
       tx.commit();
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
@@ -54,9 +61,6 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
         em.close();
       }
     }
-
-    // Disconnect
-    destroy();
   }
 
   /**
