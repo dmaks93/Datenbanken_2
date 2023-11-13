@@ -1,5 +1,6 @@
-package de.hda.fbi.db2.api;
+package de.hda.fbi.db2.stud.impl;
 
+import de.hda.fbi.db2.api.Lab02EntityManager;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
