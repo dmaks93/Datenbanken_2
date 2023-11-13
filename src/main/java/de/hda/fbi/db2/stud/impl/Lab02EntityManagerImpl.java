@@ -1,19 +1,16 @@
 package de.hda.fbi.db2.stud.impl;
 
 import de.hda.fbi.db2.api.Lab02EntityManager;
+import de.hda.fbi.db2.stud.entity.Answer;
+import de.hda.fbi.db2.stud.entity.Category;
+import de.hda.fbi.db2.stud.entity.Question;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import de.hda.fbi.db2.stud.entity.Answer;
-import de.hda.fbi.db2.stud.entity.Question;
-import de.hda.fbi.db2.stud.impl.Lab01DataImpl;
-
-import java.util.List;
-
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
-
  private EntityManagerFactory emf = null;
  private EntityManager em = null;
  private EntityTransaction tx = null;
@@ -22,9 +19,11 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    * Creates the {@link EntityManagerFactory} and stores it in a field. {@link #destroy()} should
    * then clean up the factory later again.
    */
+
   @Override
   public void init() {
      emf = Persistence.createEntityManagerFactory("default-postgresPU");
+      em = emf.createEntityManager();
   }
 
   /**
@@ -42,15 +41,30 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
   @Override
   public void persistData() {
     try {
-      em = emf.createEntityManager();
       tx = em.getTransaction();
       tx.begin();
 
-      // code here
+      List<Question> allQuestions = (List<Question>) lab01Data.getQuestions();
 
-      List<Question> l1 = (List<Question>) lab01Data.getQuestions();
+        for (Question q : allQuestions) {
+            List<Answer> possibleAnswers = q.getAnswerList();
+            for (Answer a: possibleAnswers) {
+                if (!em.contains(a)) {
+                    em.persist(a);
+                }
+            }
+            if (!em.contains(q)) {
+                em.persist(q);
+            }
+
+            Category c = q.getCategory();
+            if (!em.contains(c)) {
+                em.persist(c);
+            }
+        }
 
       tx.commit();
+
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
         tx.rollback();
@@ -61,6 +75,8 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
         em.close();
       }
     }
+      // Disconnect
+      emf.close();
   }
 
   /**
@@ -70,6 +86,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public EntityManager getEntityManager() {
-    return null;
+      this.init();
+    return this.em;
   }
 }

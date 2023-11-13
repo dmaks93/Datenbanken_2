@@ -2,15 +2,25 @@ package de.hda.fbi.db2.stud.entity;
 
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Question", schema = "db2")
 public class Question {
+  @Id
   private int id;
   private String text;
   private int correctAnswer;
+  @OneToMany(mappedBy = "question")
   private List<Answer> answerList;
+  @ManyToOne
   private Category category;
 
-  public Question () {};
+  public Question (){}
 
   /**
    * Constructor for question.
@@ -20,6 +30,7 @@ public class Question {
    * @param correctAnswer index of the correct answer
    * @param category category of the question
    */
+
   public Question(int id, String text, List<Answer> answerList, int correctAnswer,
       Category category) {
     this.id = id;

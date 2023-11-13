@@ -3,25 +3,32 @@ package de.hda.fbi.db2.stud.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Category", schema = "db2")
 public class Category {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private int id;
   private String name;
+
+  @OneToMany(mappedBy = "category")
   private List<Question> questionList;
 
-  public Category () {};
+  public Category() {}
 
-  /**
-   * constructor for categories.
-   * @param name category name
-   */
-  public Category(int id, String name) {
-    this.id = id;
+  public Category(String name) {
     this.name = name;
     this.questionList = new ArrayList<>();
   }
 
-  /* -------Getter and Setter-------------*/
   public String getName() {
     return name;
   }
@@ -55,10 +62,6 @@ public class Category {
 
   public int getId() {
     return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   @Override

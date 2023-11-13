@@ -1,20 +1,29 @@
 package de.hda.fbi.db2.stud.entity;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Answer", schema = "db2")
 public class Answer {
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private int id;
   private String text;
+  @ManyToOne
   private Question question;
 
-  public Answer () {};
-  
-  public Answer(int id, String text) {
+  public Answer() {}
+
+  public Answer(String text) {
     this.text = text;
-    this.id = id;
   }
 
-  /* -------Getter and Setter-------------*/
   public String getText() {
     return text;
   }
@@ -33,10 +42,6 @@ public class Answer {
 
   public int getId() {
     return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   @Override
