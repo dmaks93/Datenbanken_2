@@ -3,8 +3,14 @@ package de.hda.fbi.db2.stud.impl;
 import de.hda.fbi.db2.api.Lab02EntityManager;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
+
+ private EntityManagerFactory emf = null;
+ private EntityManager em = null;
+ private EntityTransaction tx = null;
 
   /**
    * Creates the {@link EntityManagerFactory} and stores it in a field. {@link #destroy()} should
@@ -12,7 +18,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public void init() {
-
+     emf = Persistence.createEntityManagerFactory("default-postgresPU");
   }
 
   /**
@@ -21,7 +27,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public void destroy() {
-
+    emf.close();
   }
 
   /**
@@ -29,7 +35,27 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public void persistData() {
+    try {
+      em = emf.createEntityManager();
+      tx = em.getTransaction();
+      tx.begin();
 
+      // code here
+
+      tx.commit();
+    } catch (RuntimeException e) {
+      if (tx != null && tx.isActive()) {
+        tx.rollback();
+      }
+      throw e;
+    } finally {
+      if (em != null) {
+        em.close();
+      }
+    }
+
+    // Disconnect
+    destroy();
   }
 
   /**
