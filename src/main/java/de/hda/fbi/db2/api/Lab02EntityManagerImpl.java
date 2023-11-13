@@ -1,6 +1,7 @@
 package de.hda.fbi.db2.api;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
 
