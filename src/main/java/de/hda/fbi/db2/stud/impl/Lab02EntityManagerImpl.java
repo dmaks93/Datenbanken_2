@@ -12,8 +12,6 @@ import javax.persistence.Persistence;
 
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
  private EntityManagerFactory emf = null;
- private EntityManager em = null;
- private EntityTransaction tx = null;
 
   /**
    * Creates the {@link EntityManagerFactory} and stores it in a field. {@link #destroy()} should
@@ -22,8 +20,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
 
   @Override
   public void init() {
-     emf = Persistence.createEntityManagerFactory("default-postgresPU");
-      em = emf.createEntityManager();
+     emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
   }
 
   /**
@@ -40,8 +37,9 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public void persistData() {
+    EntityManager em = getEntityManager();
+    EntityTransaction tx = em.getTransaction();
     try {
-      tx = em.getTransaction();
       tx.begin();
 
       List<Question> allQuestions = (List<Question>) lab01Data.getQuestions();
@@ -75,8 +73,6 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
         em.close();
       }
     }
-      // Disconnect
-      emf.close();
   }
 
   /**
@@ -86,7 +82,6 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
    */
   @Override
   public EntityManager getEntityManager() {
-      this.init();
-    return this.em;
+    return emf.createEntityManager();
   }
 }

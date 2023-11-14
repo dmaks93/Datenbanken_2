@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +16,9 @@ import javax.persistence.Table;
 public class Category {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private int id;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cat_id_generator")
+  @SequenceGenerator(name = "cat_id_generator", sequenceName = "db2.cat_id")
+  private long id;
   private String name;
 
   @OneToMany(mappedBy = "category")
@@ -60,7 +62,7 @@ public class Category {
     }
   }
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
