@@ -1,5 +1,6 @@
 package de.hda.fbi.db2.api;
 
+import de.hda.fbi.db2.stud.entity.Question;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public abstract class Lab01Data {
    *
    * @return questions
    */
-  public abstract List<?> getQuestions();
+  public abstract List<Question> getQuestions();
 
   /**
    * Return all categories.

@@ -15,8 +15,6 @@ import java.util.Map;
 public class Lab01DataImpl extends Lab01Data {
   HashMap<Integer, Question> questionList = new HashMap<>();
   HashMap<String, Category> categoryList = new HashMap<>();
-  private int catId = 0;
-  private int ansId = 0;
 
   @Override
   public List<Question> getQuestions() {
@@ -43,7 +41,7 @@ public class Lab01DataImpl extends Lab01Data {
             Integer.parseInt(row[6]), categoryBuffer);
 
         for (int i = 2; i < 6; i++) {
-          answerBuffer.add(new Answer(ansId++, row[i]));
+          answerBuffer.add(new Answer(row[i]));
         }
         for (Answer a: answerBuffer) {
           a.setQuestion(questionBuffer);
@@ -99,7 +97,7 @@ public class Lab01DataImpl extends Lab01Data {
       return categoryList.get(catName);
     } else {
       Category category;
-      category = new Category(catId++, catName);
+      category = new Category(catName);
       categoryList.put(catName, category);
       return category;
     }

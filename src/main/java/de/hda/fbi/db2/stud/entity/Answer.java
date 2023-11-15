@@ -1,20 +1,31 @@
 package de.hda.fbi.db2.stud.entity;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Answer", schema = "db2")
 public class Answer {
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Answer_id_generator")
+  @SequenceGenerator(name = "Answer_id_generator", sequenceName = "db2.answer_id")
   private int id;
   private String text;
+  @ManyToOne
   private Question question;
 
-  public Answer () {};
-  
-  public Answer(int id, String text) {
+  public Answer() {}
+
+  public Answer(String text) {
     this.text = text;
-    this.id = id;
   }
 
-  /* -------Getter and Setter-------------*/
   public String getText() {
     return text;
   }
@@ -35,10 +46,6 @@ public class Answer {
     return id;
   }
 
-  public void setId(int id) {
-    this.id = id;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -48,12 +55,11 @@ public class Answer {
       return false;
     }
     Answer answer = (Answer) o;
-    return id == answer.id && Objects.equals(text, answer.text) && Objects.equals(
-        question, answer.question);
+    return id == answer.id;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, question);
+    return Objects.hash(id);
   }
 }
