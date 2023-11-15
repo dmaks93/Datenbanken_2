@@ -11,7 +11,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class Lab02EntityManagerImpl extends Lab02EntityManager {
- private EntityManagerFactory emf = null;
+  private EntityManagerFactory emf = null;
 
   /**
    * Creates the {@link EntityManagerFactory} and stores it in a field. {@link #destroy()} should
@@ -20,7 +20,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
 
   @Override
   public void init() {
-     emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
+    emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
   }
 
   /**
@@ -41,28 +41,24 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
     EntityTransaction tx = em.getTransaction();
     try {
       tx.begin();
-
-      List<Question> allQuestions = (List<Question>) lab01Data.getQuestions();
-
-        for (Question q : allQuestions) {
-            List<Answer> possibleAnswers = q.getAnswerList();
-            for (Answer a: possibleAnswers) {
-                if (!em.contains(a)) {
-                    em.persist(a);
-                }
-            }
-            if (!em.contains(q)) {
-                em.persist(q);
-            }
-
-            Category c = q.getCategory();
-            if (!em.contains(c)) {
-                em.persist(c);
-            }
+      List<Question> allQuestions = lab01Data.getQuestions();
+      for (Question q : allQuestions) {
+        List<Answer> possibleAnswers = q.getAnswerList();
+        for (Answer a: possibleAnswers) {
+          if (!em.contains(a)) {
+            em.persist(a);
+          }
+        }
+        if (!em.contains(q)) {
+          em.persist(q);
         }
 
+        Category c = q.getCategory();
+        if (!em.contains(c)) {
+          em.persist(c);
+        }
+      }
       tx.commit();
-
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
         tx.rollback();

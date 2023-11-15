@@ -2,6 +2,7 @@ package de.hda.fbi.db2.stud.entity;
 
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -23,7 +24,7 @@ public class Question {
   @ManyToOne
   private Category category;
 
-  public Question (){}
+  public Question(){}
 
   /**
    * Constructor for question.
