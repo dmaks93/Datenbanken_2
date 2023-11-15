@@ -55,12 +55,11 @@ public class Answer {
       return false;
     }
     Answer answer = (Answer) o;
-    return id == answer.id && Objects.equals(text, answer.text) && Objects.equals(
-        question, answer.question);
+    return id == answer.id;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, question);
+    return Objects.hash(id);
   }
 }

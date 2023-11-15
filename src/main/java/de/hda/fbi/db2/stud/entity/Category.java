@@ -3,6 +3,7 @@ package de.hda.fbi.db2.stud.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,8 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cat_id_generator")
   @SequenceGenerator(name = "cat_id_generator", sequenceName = "db2.cat_id")
-  private long id;
+  private int id;
+  @Column(name = "name", unique = true)
   private String name;
 
   @OneToMany(mappedBy = "category")
@@ -62,8 +64,15 @@ public class Category {
     }
   }
 
-  public long getId() {
+  public int getId() {
     return id;
+  }
+
+
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 
   @Override
@@ -75,13 +84,7 @@ public class Category {
       return false;
     }
     Category category = (Category) o;
-    return id == category.id && Objects.equals(name, category.name)
-        && Objects.equals(questionList, category.questionList);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name, questionList);
+    return id == category.id;
   }
 }
 

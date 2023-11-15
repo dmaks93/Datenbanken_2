@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +18,7 @@ public class Question {
   private String text;
   private int correctAnswer;
   @OneToMany(mappedBy = "question")
+  @OrderBy
   private List<Answer> answerList;
   @ManyToOne
   private Category category;
@@ -102,13 +105,11 @@ public class Question {
       return false;
     }
     Question question = (Question) o;
-    return id == question.id && correctAnswer == question.correctAnswer && Objects.equals(
-        text, question.text) && Objects.equals(answerList, question.answerList)
-        && Objects.equals(category, question.category);
+    return id == question.id;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, answerList, correctAnswer, category);
+    return Objects.hash(id);
   }
 }
