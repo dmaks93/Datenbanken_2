@@ -27,7 +27,6 @@ public class Lab01DataImpl extends Lab01Data {
 
   @Override
   public void loadCsvFile(List<String[]> csvLines) {
-    boolean firstRow = true;
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
     Question questionBuffer;
