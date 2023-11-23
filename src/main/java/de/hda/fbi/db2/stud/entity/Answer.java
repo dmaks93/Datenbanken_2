@@ -6,9 +6,9 @@ import javax.persistence.*;
 @Embeddable
 //@Table(name = "Answer", schema = "db2")
 public class Answer {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Answer_id_generator")
-  @SequenceGenerator(name = "Answer_id_generator", sequenceName = "db2.answer_id")
+ //@Id
+ //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Answer_id_generator")
+ //@SequenceGenerator(name = "Answer_id_generator", sequenceName = "db2.answer_id")
   private int id;
   private String text;
  // @ManyToOne
