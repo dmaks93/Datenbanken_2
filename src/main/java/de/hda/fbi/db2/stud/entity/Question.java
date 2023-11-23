@@ -2,24 +2,18 @@ package de.hda.fbi.db2.stud.entity;
 
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Question", schema = "db2")
+//@Table(name = "Question", schema = "db2")
 public class Question {
   @Id
   private int id;
   private String text;
   private int correctAnswer;
-  @OneToMany(mappedBy = "question")
-  @OrderBy
+ // @OneToMany(mappedBy = "question")
+ // @OrderColumn (name = "position")
+  @ElementCollection
   private List<Answer> answerList;
   @ManyToOne
   private Category category;

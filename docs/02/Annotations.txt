@@ -34,6 +34,8 @@ public class Question {
     private int correctAnswer;
 
    @OneToMany(mappedBy = "question")
+   @OrderColumn (name = "position")
+   @ElementCollection
    private List<Answer> answerList;
 
    @ManyToOne
@@ -42,7 +44,7 @@ public class Question {
    // Constructors, getters, setters, and other methods
 }
 
-@Entity
+@Embeddable
 @Table(name = "Answer", schema = "db2")
 public class Answer {
    @Id
