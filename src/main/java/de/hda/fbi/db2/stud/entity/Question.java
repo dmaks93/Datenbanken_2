@@ -6,6 +6,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderColumn;
 
 
 @Entity
@@ -16,6 +17,7 @@ public class Question {
   private int correctAnswer;
 
   @ElementCollection
+  @OrderColumn(name = "reihenfolge")
   private List<Answer> answerList;
   @ManyToOne
   private Category category;
