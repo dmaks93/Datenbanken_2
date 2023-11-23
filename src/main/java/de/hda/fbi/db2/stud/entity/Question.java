@@ -17,7 +17,7 @@ public class Question {
   private int correctAnswer;
 
   @ElementCollection
-  @OrderColumn(name = "reihenfolge")
+  @OrderColumn(name = "index")
   private List<Answer> answerList;
   @ManyToOne
   private Category category;
