@@ -1,7 +1,8 @@
 package de.hda.fbi.db2.stud.entity;
 
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+
 
 @Embeddable
 public class Answer {
