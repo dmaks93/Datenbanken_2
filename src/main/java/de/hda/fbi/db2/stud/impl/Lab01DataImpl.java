@@ -31,23 +31,18 @@ public class Lab01DataImpl extends Lab01Data {
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
     Question questionBuffer;
-    for (String[] row : csvLines) {
-      if (!firstRow) {
+    for (int i = 1; i < csvLines.size(); i++) {
+      String[] row = csvLines.get(i);
+      answerBuffer = new ArrayList<>();
+      categoryBuffer = loadCategory(row[7]);
+      questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
+          Integer.parseInt(row[6]), categoryBuffer);
 
-        answerBuffer = new ArrayList<>();
-        categoryBuffer = loadCategory(row[7]);
-        questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
-            Integer.parseInt(row[6]), categoryBuffer);
-
-        for (int i = 2; i < 6; i++) {
-          answerBuffer.add(new Answer(row[i]));
-        }
-        questionList.put(questionBuffer.getQuestionId(), questionBuffer);
-        categoryBuffer.addQuestion(questionBuffer);
-
-      } else {
-        firstRow = false;
+      for (int j = 2; j < 6; j++) {
+        answerBuffer.add(new Answer(row[j]));
       }
+      questionList.put(questionBuffer.getQuestionId(), questionBuffer);
+      categoryBuffer.addQuestion(questionBuffer);
     }
     this.printOut();
   }
