@@ -6,7 +6,6 @@ import de.hda.fbi.db2.stud.entity.Answer;
 import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +42,7 @@ public class Lab01DataImpl extends Lab01Data {
         for (int i = 2; i < 6; i++) {
           answerBuffer.add(new Answer(row[i]));
         }
-       // for (Answer a: answerBuffer) {
-       //   a.setQuestion(questionBuffer);
-       // }
-        questionList.put(questionBuffer.getId(), questionBuffer);
+        questionList.put(questionBuffer.getQuestionId(), questionBuffer);
         categoryBuffer.addQuestion(questionBuffer);
 
       } else {
@@ -69,7 +65,7 @@ public class Lab01DataImpl extends Lab01Data {
       List<Question> catQuestions = c.getValue().getQuestions();
 
       for (Question q : catQuestions) {
-        int questionId = q.getId();
+        int questionId = q.getQuestionId();
         System.out.print("ID: " + questionId + ": " + q.getText());
         System.out.print("\n");
         System.out.print("Possible Answers: " + "\n");

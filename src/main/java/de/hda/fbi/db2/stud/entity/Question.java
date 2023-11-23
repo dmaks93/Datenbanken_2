@@ -8,11 +8,10 @@ import javax.persistence.*;
 //@Table(name = "Question", schema = "db2")
 public class Question {
   @Id
-  private int id;
+  private int questionId;
   private String text;
   private int correctAnswer;
- // @OneToMany(mappedBy = "question")
- // @OrderColumn (name = "position")
+
   @ElementCollection
   private List<Answer> answerList;
   @ManyToOne
@@ -31,15 +30,15 @@ public class Question {
 
   public Question(int id, String text, List<Answer> answerList, int correctAnswer,
       Category category) {
-    this.id = id;
+    this.questionId = id;
     this.text = text;
     this.answerList = answerList;
     this.correctAnswer = correctAnswer;
     this.category = category;
   }
 
-  public int getId() {
-    return id;
+  public int getQuestionId() {
+    return questionId;
   }
 
   public String getText() {
@@ -63,8 +62,8 @@ public class Question {
     return category;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setQuestionId(int questionId) {
+    this.questionId = questionId;
   }
 
   public void setText(String text) {
@@ -100,11 +99,11 @@ public class Question {
       return false;
     }
     Question question = (Question) o;
-    return id == question.id;
+    return questionId == question.questionId;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(questionId);
   }
 }

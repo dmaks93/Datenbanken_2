@@ -43,12 +43,6 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
       tx.begin();
       List<Question> allQuestions = lab01Data.getQuestions();
       for (Question q : allQuestions) {
-       // List<Answer> possibleAnswers = q.getAnswerList();
-       // for (Answer a: possibleAnswers) {
-       //   if (!em.contains(a)) {
-       //     em.persist(a);
-       //   }
-       // }
         if (!em.contains(q)) {
           em.persist(q);
         }
