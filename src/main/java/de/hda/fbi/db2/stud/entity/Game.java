@@ -1,7 +1,7 @@
 package de.hda.fbi.db2.stud.entity;
 
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -19,6 +19,12 @@ public class Game {
   @ManyToOne
   private Player player;
   @ManyToMany
+  @JoinTable(
+      name = "game_question",
+      joinColumns = @JoinColumn(name = "gameId"),
+      inverseJoinColumns = @JoinColumn(name = "questionId"),
+      uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "questionId", "isCorrect"})
+  )
   private List<Question> questionList;
 
   Game () {};
