@@ -27,7 +27,7 @@ public class Game {
   )
   private List<Question> questionList;
 
-  Game () {};
+  public Game() {};
 
   public Game(Player player, List<Question> questions) {
     this.player = player;
