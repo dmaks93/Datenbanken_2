@@ -34,10 +34,16 @@ public class Game {
   @JoinTable(
       name = "game_question",
       joinColumns = @JoinColumn(name = "gameId"),
-      inverseJoinColumns = @JoinColumn(name = "questionId"),
-      uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "questionId", "isCorrect"})
+      inverseJoinColumns = @JoinColumn(name = "questionId")
   )
   private List<Question> questionList;
+  @ManyToMany
+  @JoinTable(
+      name = "correct_question",
+      joinColumns = @JoinColumn(name = "gameId"),
+      inverseJoinColumns = @JoinColumn(name = "questionId")
+  )
+  private List<Question> correctQuestions;
 
   public Game() {};
 
@@ -56,6 +62,14 @@ public class Game {
 
   public void setQuestionList(List<Question> questionList) {
     this.questionList = questionList;
+  }
+
+  public List<Question> getCorrectQuestions() {
+    return correctQuestions;
+  }
+
+  public void setCorrectQuestions(List<Question> correctQuestions) {
+    this.correctQuestions = correctQuestions;
   }
 
   @Override
