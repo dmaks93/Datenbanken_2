@@ -37,14 +37,6 @@ public class Game {
     this.questionList = questionList;
   }
 
-  public int getGameID() {
-    return gameId;
-  }
-
-  public void setGameId(int gameId) {
-    this.gameId = gameId;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
