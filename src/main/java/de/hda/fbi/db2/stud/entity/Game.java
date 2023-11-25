@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,10 +25,9 @@ public class Game {
   private Date start;
   @Temporal(TemporalType.DATE)
   private Date end;
-  @ManyToMany
+  @ManyToOne
   private Player player;
-
-
+  @ManyToMany
   private List<Question> questionList;
 
   public Game(Player player, List<Question> questions) {
