@@ -2,6 +2,7 @@ package de.hda.fbi.db2.stud.entity;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,6 +16,26 @@ public class Game {
   private Date start;
   private Date end;
 
+  private Player player;
+
+  private List<Question> questionList;
+
+  public Game(Player player, List<Question> questions) {
+    this.player = player;
+    this.questionList = questions;
+  }
+
+  public List<Question> getQuestionList() {
+    return questionList;
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setQuestionList(List<Question> questionList) {
+    this.questionList = questionList;
+  }
 
   public int getGameID() {
     return gameId;
