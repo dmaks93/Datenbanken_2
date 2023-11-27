@@ -24,9 +24,9 @@ public class Game {
   @SequenceGenerator(name = "game_id_generator", sequenceName = "db2.game_id")
   private int gameId;
   @Temporal(TIMESTAMP)
-  private Date start;
+  private Date startTime;
   @Temporal(TIMESTAMP)
-  private Date end;
+  private Date endTime;
   @ManyToOne
   private Player player;
   @ManyToMany
