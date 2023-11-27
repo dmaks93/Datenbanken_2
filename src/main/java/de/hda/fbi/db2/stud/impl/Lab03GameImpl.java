@@ -1,6 +1,7 @@
 package de.hda.fbi.db2.stud.impl;
 
 import de.hda.fbi.db2.api.Lab03Game;
+import de.hda.fbi.db2.stud.entity.Player;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Lab03GameImpl extends Lab03Game {
      */
     @Override
     public Object getOrCreatePlayer(String playerName) {
-        return null;
+        return new Player(playerName);
     }
 
     /**
@@ -43,7 +44,8 @@ public class Lab03GameImpl extends Lab03Game {
      */
     @Override
     public Object interactiveGetOrCreatePlayer() {
-        return null;
+        String userName = "a";
+       return getOrCreatePlayer(userName);
     }
 
     /**

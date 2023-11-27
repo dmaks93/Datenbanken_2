@@ -12,6 +12,7 @@ import java.util.Map;
 
 
 public class Lab01DataImpl extends Lab01Data {
+  static int answerId = 0;
   HashMap<Integer, Question> questionList = new HashMap<>();
   HashMap<String, Category> categoryList = new HashMap<>();
 
@@ -38,7 +39,8 @@ public class Lab01DataImpl extends Lab01Data {
           Integer.parseInt(row[6]), categoryBuffer);
 
       for (int j = 2; j < 6; j++) {
-        answerBuffer.add(new Answer(row[j]));
+        answerId++;
+        answerBuffer.add(new Answer(answerId, row[j]));
       }
       questionList.put(questionBuffer.getQuestionId(), questionBuffer);
       categoryBuffer.addQuestion(questionBuffer);

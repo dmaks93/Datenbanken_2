@@ -12,9 +12,8 @@ public class Player {
     @Column(name = "username", unique = true)
     private String username;
 
-    Player () {};
-
-    Player (String name) {
+    public Player () {};
+    public Player (String name) {
         this.username = name;
     }
 

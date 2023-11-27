@@ -1,6 +1,5 @@
 package de.hda.fbi.db2.stud.entity;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +13,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 public class Game {
@@ -24,9 +23,9 @@ public class Game {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_id_generator")
   @SequenceGenerator(name = "game_id_generator", sequenceName = "db2.game_id")
   private int gameId;
-  @Temporal(TemporalType.DATE)
+  @Temporal(TIMESTAMP)
   private Date start;
-  @Temporal(TemporalType.DATE)
+  @Temporal(TIMESTAMP)
   private Date end;
   @ManyToOne
   private Player player;
