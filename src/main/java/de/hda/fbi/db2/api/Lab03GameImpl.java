@@ -8,6 +8,7 @@ import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Lab03GameImpl extends Lab03Game {
 
@@ -29,6 +30,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object getOrCreatePlayer(String playerName) {
+    // prüfen ob User in Datenbank existiert fehlt noch
     return new Player(playerName);
   }
 
@@ -49,8 +51,11 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object interactiveGetOrCreatePlayer() {
-    String userName = "a";
-    return getOrCreatePlayer(userName);
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Gebe deinen Namen ein: ");
+    String userInput = scanner.nextLine();
+    scanner.close();
+    return getOrCreatePlayer(userInput);
   }
 
   /**
@@ -107,6 +112,46 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public List<?> interactiveGetQuestions() {
+    String userInput = "";
+    List<Integer> categoriesToPlay = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
+    while(true) {
+      System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
+      userInput = scanner.nextLine();
+      if (!userInput.equalsIgnoreCase("x")){
+        try {
+          int catId = Integer.parseInt(userInput);
+          categoriesToPlay.add(catId);
+          System.out.println("Kategorie: " + catId + " erfolgreich hinzugefügt");
+        } catch (NumberFormatException e) {
+          System.out.println("Fehlerhafte Eingabe, bitte versuche es erneut.");
+        }
+      } else {
+        break;
+      }
+    }
+    while(true) {
+      System.out.println("Gebe die Anzahl an Fragen pro Kategorie an");
+      userInput = scanner.nextLine();
+      try {
+        int number = Integer.parseInt(userInput);
+        System.out.println("Erfolgreich " + number + " Fragen ausgewählt");
+        break;
+      } catch (NumberFormatException e) {
+        System.out.println("Fehlerhafte Eingabe, bitte versuche es erneut.");
+      }
+    }
+    scanner.close();
+    try {
+      for (int id: categoriesToPlay) {
+        // Hier müssen wir die Kategorien inklusive Questions aus der Datenbank abrufen
+        // und in categoryList schereiben.
+      }
+    } catch (NullPointerException e) {
+      System.out.println("Es wurde eine nicht existierende Kategorie ausgewählt "
+          + "bitte versuchen Sie es erneut");
+      return this.interactiveGetQuestions();
+    }
     return null;
   }
 
