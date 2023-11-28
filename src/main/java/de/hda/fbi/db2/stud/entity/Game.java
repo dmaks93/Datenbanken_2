@@ -1,5 +1,7 @@
 package de.hda.fbi.db2.stud.entity;
 
+import static javax.persistence.TemporalType.TIMESTAMP;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,16 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
-import javax.persistence.UniqueConstraint;
-
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 public class Game {
@@ -34,8 +30,14 @@ public class Game {
   @OneToMany(mappedBy = "game")
   private List<GivenAnswer> gameQuestions;
 
-  public Game() {};
+  public Game() {}
 
+  /**
+   * creates a new game with the player and a list of questions. the questions are written into a
+   * gameAnswers list which remembers each question and whether they were answered correctly or not.
+   * @param player the player
+   * @param questions the question
+   */
   public Game(Player player, List<Question> questions) {
     this.player = player;
     this.gameQuestions = new ArrayList<GivenAnswer>();
@@ -69,5 +71,13 @@ public class Game {
     return gameId == game.gameId && Objects.equals(startTime, game.startTime)
         && Objects.equals(endTime, game.endTime) && Objects.equals(player,
         game.player) && Objects.equals(gameQuestions, game.gameQuestions);
+  }
+
+  public void setGameId(int gameId) {
+    this.gameId = gameId;
+  }
+
+  public int getGameId() {
+    return gameId;
   }
 }
