@@ -1,8 +1,13 @@
 package de.hda.fbi.db2.stud.impl;
 
 import de.hda.fbi.db2.api.Lab03Game;
+import de.hda.fbi.db2.stud.entity.Category;
+import de.hda.fbi.db2.stud.entity.Game;
 import de.hda.fbi.db2.stud.entity.Player;
+import de.hda.fbi.db2.stud.entity.Question;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Lab03GameImpl extends Lab03Game {
 
@@ -67,8 +72,26 @@ public class Lab03GameImpl extends Lab03Game {
    * @see Lab03Game#interactiveGetQuestions()
    */
   @Override
-  public List<?> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
-    return null;
+  public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
+    List<Question> questions = new ArrayList<Question>();
+    Random rand = new Random();
+    for (Object cat : categories) {
+      if (cat instanceof Category) {
+        Category questionCategory = (Category) cat;
+        int catQuestionsToGet = Math.min(questionCategory.getQuestions().size(),
+            amountOfQuestionsForCategory);
+        int nextQuestionIndex;
+        Question selectedQuestion;
+        while (catQuestionsToGet > 0) {
+          nextQuestionIndex = rand.nextInt(catQuestionsToGet);
+          selectedQuestion = questionCategory.getQuestions().get(nextQuestionIndex);
+          questionCategory.removeQuestion(selectedQuestion.getQuestionId());
+          questions.add(selectedQuestion);
+          --catQuestionsToGet;
+        }
+      }
+    }
+    return questions;
   }
 
   /**
@@ -101,7 +124,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object createGame(Object player, List<?> questions) {
-    return null;
+    return new Game((Player) player, (List<Question>) questions);
   }
 
   /**
