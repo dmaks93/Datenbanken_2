@@ -1,5 +1,6 @@
 package de.hda.fbi.db2.stud.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
@@ -29,46 +31,30 @@ public class Game {
   private Date endTime;
   @ManyToOne
   private Player player;
-  @ManyToMany
-  @JoinTable(
-      name = "game_question",
-      joinColumns = @JoinColumn(name = "gameId"),
-      inverseJoinColumns = @JoinColumn(name = "questionId")
-  )
-  private List<Question> questionList;
-  @ManyToMany
-  @JoinTable(
-      name = "correct_question",
-      joinColumns = @JoinColumn(name = "gameId"),
-      inverseJoinColumns = @JoinColumn(name = "questionId")
-  )
-  private List<Question> correctQuestions;
+  @OneToMany(mappedBy = "game")
+  private List<GivenAnswer> gameQuestions;
 
   public Game() {};
 
   public Game(Player player, List<Question> questions) {
     this.player = player;
-    this.questionList = questions;
+    this.gameQuestions = new ArrayList<GivenAnswer>();
+    for (Question q: questions) {
+      this.gameQuestions.add(new GivenAnswer(this, q));
+    }
   }
 
-  public List<Question> getQuestionList() {
-    return questionList;
+  public List<GivenAnswer> getQuestionList() {
+    return gameQuestions;
   }
 
   public Player getPlayer() {
     return player;
   }
 
-  public void setQuestionList(List<Question> questionList) {
-    this.questionList = questionList;
-  }
-
-  public List<Question> getCorrectQuestions() {
-    return correctQuestions;
-  }
-
-  public void setCorrectQuestions(List<Question> correctQuestions) {
-    this.correctQuestions = correctQuestions;
+  @Override
+  public int hashCode() {
+    return gameId;
   }
 
   @Override
@@ -80,11 +66,8 @@ public class Game {
       return false;
     }
     Game game = (Game) o;
-    return gameId == game.gameId;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(gameId);
+    return gameId == game.gameId && Objects.equals(startTime, game.startTime)
+        && Objects.equals(endTime, game.endTime) && Objects.equals(player,
+        game.player) && Objects.equals(gameQuestions, game.gameQuestions);
   }
 }
