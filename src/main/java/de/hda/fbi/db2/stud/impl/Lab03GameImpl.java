@@ -125,11 +125,17 @@ public class Lab03GameImpl extends Lab03Game {
   @Override
   public List<?> interactiveGetQuestions() {
     String userInput = "";
-    List<Integer> categoriesToPlay = new ArrayList<>();
     int number;
+    List<Integer> categoriesToPlay = new ArrayList<>();
+    List <Category> allCategories;
     Scanner scanner = new Scanner(System.in);
     int catCounter = 0;
     while (true) {
+      String query = "SELECT c FROM Category c";
+      allCategories = lab02EntityManager.getEntityManager().createQuery(query, Category.class).getResultList();
+      for (Category c: allCategories) {
+        System.out.println(c.getCategoryId() + ": " + c.getName());
+      }
       System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
       userInput = scanner.nextLine();
       if (!userInput.equalsIgnoreCase("x") && catCounter < 2) {
