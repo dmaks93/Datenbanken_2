@@ -10,7 +10,6 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Player {
-
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
   @SequenceGenerator(name = "player_id_generator", sequenceName = "db2.player_id")

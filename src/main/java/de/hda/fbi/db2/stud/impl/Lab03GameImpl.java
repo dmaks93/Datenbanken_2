@@ -9,8 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
 
 public class Lab03GameImpl extends Lab03Game {
+  EntityManagerFactory emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
+  EntityManager em = emf.createEntityManager();
 
   /**
    * Creates a new Player or retrieves it from the database.
@@ -30,7 +36,11 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object getOrCreatePlayer(String playerName) {
-    // prüfen ob User in Datenbank existiert fehlt noch
+    Query query = em.createQuery("SELECT p from Player p where p.username = :name");
+    query.setParameter("name", playerName);
+    Player existingPlayer = (Player) query.getSingleResult();
+    if (existingPlayer != null)
+      return existingPlayer;
     return new Player(playerName);
   }
 
