@@ -10,7 +10,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
-public class GivenAnswer {
+public class GameQuestion {
   @Id
   @ManyToOne
   @JoinColumn(name = "question_id")
@@ -21,9 +21,9 @@ public class GivenAnswer {
   private Game game;
   private boolean isCorrect;
 
-  public GivenAnswer() {}
+  public GameQuestion() {}
 
-  public GivenAnswer(Game game, Question question) {
+  public GameQuestion(Game game, Question question) {
     this.question = question;
     this.game = game;
   }
@@ -52,7 +52,7 @@ public class GivenAnswer {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GivenAnswer that = (GivenAnswer) o;
+    GameQuestion that = (GameQuestion) o;
     return isCorrect == that.isCorrect && Objects.equals(question, that.question)
         && Objects.equals(game, that.game);
   }

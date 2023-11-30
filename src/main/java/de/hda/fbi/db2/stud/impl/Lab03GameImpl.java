@@ -1,8 +1,8 @@
 package de.hda.fbi.db2.stud.impl;
 
 import de.hda.fbi.db2.api.Lab03Game;
-import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Game;
+import de.hda.fbi.db2.stud.entity.GameQuestion;
 import de.hda.fbi.db2.stud.entity.Player;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
@@ -178,7 +178,6 @@ public class Lab03GameImpl extends Lab03Game {
   @Override
   public Object createGame(Object player, List<?> questions) {
     Game currentGame = new Game ((Player) player, (List<Question>) questions);
-    System.out.println("Game created");
     return currentGame;
   }
 
@@ -193,7 +192,6 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public void playGame(Object game) {
-
   }
 
   /**
@@ -207,7 +205,28 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public void interactivePlayGame(Object game) {
-
+    Game currentGame = (Game) game;
+    String userInput = "";
+    Scanner scanner = new Scanner(System.in);
+    List<GameQuestion> questionList = currentGame.getQuestionList();
+    for (int i = 0; i < questionList.size(); ++i) {
+      Question currentQuestion = questionList.get(i).getQuestion();
+      System.out.println(currentQuestion.getText());
+      for (int j = 0; j < currentQuestion.getAnswerList().size(); ++j) {
+        ++j;
+        System.out.println(j+ ": " + currentQuestion.getAnswerList().get(--j).getText());
+      }
+      userInput = scanner.nextLine();
+      int ans = Integer.parseInt(userInput);
+      if (currentQuestion.checkAnswer(ans)) {
+        questionList.get(i).setCorrect(true);
+        System.out.println("Huraaa!! Correct");
+      }
+      else {
+        questionList.get(i).setCorrect(false);
+        System.out.println("Loser! ");
+      }
+    }
   }
 
   /**

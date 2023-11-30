@@ -28,7 +28,7 @@ public class Game {
   @ManyToOne
   private Player player;
   @OneToMany(mappedBy = "game")
-  private List<GivenAnswer> gameQuestions;
+  private List<GameQuestion> gameQuestions;
 
   public Game() {}
 
@@ -40,13 +40,13 @@ public class Game {
    */
   public Game(Player player, List<Question> questions) {
     this.player = player;
-    this.gameQuestions = new ArrayList<GivenAnswer>();
+    this.gameQuestions = new ArrayList<GameQuestion>();
     for (Question q: questions) {
-      this.gameQuestions.add(new GivenAnswer(this, q));
+      this.gameQuestions.add(new GameQuestion(this, q));
     }
   }
 
-  public List<GivenAnswer> getQuestionList() {
+  public List<GameQuestion> getQuestionList() {
     return gameQuestions;
   }
 
