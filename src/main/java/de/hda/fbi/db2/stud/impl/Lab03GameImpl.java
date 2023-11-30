@@ -102,7 +102,7 @@ public class Lab03GameImpl extends Lab03Game {
       while (numQuestions > 0) {
         nextQuestionIndex = rand.nextInt(numQuestions);
         selectedQuestion = allQuestion.get(nextQuestionIndex);
-        allQuestion.remove(selectedQuestion.getQuestionId());
+        allQuestion.remove(nextQuestionIndex);
         questions.add(selectedQuestion);
         --numQuestions;
       }
@@ -155,13 +155,12 @@ public class Lab03GameImpl extends Lab03Game {
     }
     //scanner.close();
     try {
-      getQuestions(categoriesToPlay, number);
+      return getQuestions(categoriesToPlay, number);
     } catch (NullPointerException e) {
       System.out.println("Es wurde eine nicht existierende Kategorie ausgewählt "
           + "bitte versuchen Sie es erneut");
       return this.interactiveGetQuestions();
     }
-    return null;
   }
 
   /**
@@ -178,7 +177,9 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object createGame(Object player, List<?> questions) {
-    return new Game((Player) player, (List<Question>) questions);
+    Game currentGame = new Game ((Player) player, (List<Question>) questions);
+    System.out.println("Game created");
+    return currentGame;
   }
 
   /**
