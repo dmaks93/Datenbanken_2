@@ -9,14 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.EntityManager;
 
 public class Lab03GameImpl extends Lab03Game {
-  EntityManagerFactory emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
-  EntityManager em = emf.createEntityManager();
 
   /**
    * Creates a new Player or retrieves it from the database.
@@ -36,12 +31,17 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object getOrCreatePlayer(String playerName) {
-    Query query = em.createQuery("SELECT p from Player p where p.username = :name");
+    Query query = lab02EntityManager.getEntityManager()
+        .createQuery("SELECT p from Player p where p.username = :name");
     query.setParameter("name", playerName);
-    Player existingPlayer = (Player) query.getSingleResult();
-    if (existingPlayer != null)
-      return existingPlayer;
-    return new Player(playerName);
+    Player existingPlayer;
+
+    try {
+      existingPlayer = (Player) query.getSingleResult();
+    } catch (RuntimeException e) {
+      return new Player(playerName);
+    }
+    return existingPlayer;
   }
 
   /**
@@ -64,7 +64,7 @@ public class Lab03GameImpl extends Lab03Game {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Gebe deinen Namen ein: ");
     String userInput = scanner.nextLine();
-    scanner.close();
+    //scanner.close();
     return getOrCreatePlayer(userInput);
   }
 
@@ -90,20 +90,21 @@ public class Lab03GameImpl extends Lab03Game {
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
     List<Question> questions = new ArrayList<Question>();
     Random rand = new Random();
-    for (Object cat : categories) {
-      if (cat instanceof Category) {
-        Category questionCategory = (Category) cat;
-        int catQuestionsToGet = Math.min(questionCategory.getQuestions().size(),
-            amountOfQuestionsForCategory);
-        int nextQuestionIndex;
-        Question selectedQuestion;
-        while (catQuestionsToGet > 0) {
-          nextQuestionIndex = rand.nextInt(catQuestionsToGet);
-          selectedQuestion = questionCategory.getQuestions().get(nextQuestionIndex);
-          questionCategory.removeQuestion(selectedQuestion.getQuestionId());
-          questions.add(selectedQuestion);
-          --catQuestionsToGet;
-        }
+
+    for (int i = 0; i < categories.size(); i++) {
+      int catId = (int) categories.get(i);
+      String query = "SELECT q FROM Question q WHERE q.category.categoryId = :catId";
+      List<Question> allQuestion = lab02EntityManager.getEntityManager().createQuery(query, Question.class)
+          .setParameter("catId", catId).getResultList();
+      int numQuestions = Math.min(allQuestion.size(), amountOfQuestionsForCategory);
+      int nextQuestionIndex;
+      Question selectedQuestion;
+      while (numQuestions > 0) {
+        nextQuestionIndex = rand.nextInt(numQuestions);
+        selectedQuestion = allQuestion.get(nextQuestionIndex);
+        allQuestion.remove(selectedQuestion.getQuestionId());
+        questions.add(selectedQuestion);
+        --numQuestions;
       }
     }
     return questions;
@@ -124,11 +125,12 @@ public class Lab03GameImpl extends Lab03Game {
   public List<?> interactiveGetQuestions() {
     String userInput = "";
     List<Integer> categoriesToPlay = new ArrayList<>();
+    int number;
     Scanner scanner = new Scanner(System.in);
-    while(true) {
+    while (true) {
       System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
       userInput = scanner.nextLine();
-      if (!userInput.equalsIgnoreCase("x")){
+      if (!userInput.equalsIgnoreCase("x")) {
         try {
           int catId = Integer.parseInt(userInput);
           categoriesToPlay.add(catId);
@@ -140,23 +142,20 @@ public class Lab03GameImpl extends Lab03Game {
         break;
       }
     }
-    while(true) {
+    while (true) {
       System.out.println("Gebe die Anzahl an Fragen pro Kategorie an");
       userInput = scanner.nextLine();
       try {
-        int number = Integer.parseInt(userInput);
+        number = Integer.parseInt(userInput);
         System.out.println("Erfolgreich " + number + " Fragen ausgewählt");
         break;
       } catch (NumberFormatException e) {
         System.out.println("Fehlerhafte Eingabe, bitte versuche es erneut.");
       }
     }
-    scanner.close();
+    //scanner.close();
     try {
-      for (int id: categoriesToPlay) {
-        // Hier müssen wir die Kategorien inklusive Questions aus der Datenbank abrufen
-        // und in categoryList schereiben.
-      }
+      getQuestions(categoriesToPlay, number);
     } catch (NullPointerException e) {
       System.out.println("Es wurde eine nicht existierende Kategorie ausgewählt "
           + "bitte versuchen Sie es erneut");
