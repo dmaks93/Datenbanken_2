@@ -192,8 +192,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object createGame(Object player, List<?> questions) {
-    Game currentGame = new Game((Player) player, (List<Question>) questions);
-    return currentGame;
+    return new Game((Player) player, (List<Question>) questions);
   }
 
   /**
