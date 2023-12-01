@@ -14,13 +14,17 @@ public class Player {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
   @SequenceGenerator(name = "player_id_generator", sequenceName = "db2.player_id")
   private int playerId;
-  @Column(name = "username", unique = true)
+  @Column(name = "username")
   private String username;
 
   public Player() {}
 
   public Player(String name) {
     this.username = name;
+  }
+
+  public int getPlayerId() {
+    return playerId;
   }
 
   public String getUsername() {

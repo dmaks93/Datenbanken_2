@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public class Lab03GameImpl extends Lab03Game {
@@ -40,13 +41,13 @@ public class Lab03GameImpl extends Lab03Game {
     EntityManager em = lab02EntityManager.getEntityManager();
     Query query = em.createQuery("SELECT p from Player p where p.username = :name");
     query.setParameter("name", playerName);
-    em.close();
     Player existingPlayer;
     try {
       existingPlayer = (Player) query.getSingleResult();
-    } catch (RuntimeException e) {
-      return new Player(playerName);
+    } catch (NoResultException e) {
+      existingPlayer = new Player(playerName);
     }
+    em.close();
     return existingPlayer;
   }
 
@@ -270,7 +271,7 @@ public class Lab03GameImpl extends Lab03Game {
       if (!em.contains(currentGame)) {
         em.persist(currentGame);
       }
-      if (!em.contains(p)) {
+      if (!em.contains(p) && em.find(Player.class, p.getPlayerId()) == null) {
         em.persist(p);
       }
       for (GameQuestion q : questions) {
