@@ -106,7 +106,7 @@ public class Lab03GameImpl extends Lab03Game {
       int nextQuestionIndex;
       Question selectedQuestion;
       while (numQuestions > 0) {
-        nextQuestionIndex = rand.nextInt(numQuestions);
+        nextQuestionIndex = rand.nextInt(allQuestion.size());
         selectedQuestion = allQuestion.get(nextQuestionIndex);
         allQuestion.remove(nextQuestionIndex);
         questions.add(selectedQuestion);
