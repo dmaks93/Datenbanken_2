@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
-import java.util.Calendar;
 
 @Entity
 public class Game {
@@ -82,13 +81,19 @@ public class Game {
     return gameId;
   }
 
-  public void setStartTime() {
-    Calendar calendar = Calendar.getInstance();
-    this.startTime = calendar.getTime();
+  public void startTimer() {
+    this.startTime = new Date();
   }
 
-  public void setEndTime() {
-    Calendar calendar = Calendar.getInstance();
-    this.endTime = calendar.getTime();
+  public void stopTimer() {
+    this.endTime = new Date();
+  }
+
+  public Date getStartTime() {
+    return startTime;
+  }
+
+  public Date getEndTime() {
+    return endTime;
   }
 }

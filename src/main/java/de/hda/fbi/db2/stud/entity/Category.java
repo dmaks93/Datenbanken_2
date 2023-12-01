@@ -73,6 +73,7 @@ public class Category {
     return Objects.hash(categoryId);
   }
 
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -82,7 +83,8 @@ public class Category {
       return false;
     }
     Category category = (Category) o;
-    return categoryId == category.categoryId;
+    return categoryId == category.categoryId && Objects.equals(name, category.name)
+        && Objects.equals(questionList, category.questionList);
   }
 }
 

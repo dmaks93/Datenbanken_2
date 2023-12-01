@@ -6,6 +6,7 @@ import de.hda.fbi.db2.stud.entity.Game;
 import de.hda.fbi.db2.stud.entity.GameQuestion;
 import de.hda.fbi.db2.stud.entity.Player;
 import de.hda.fbi.db2.stud.entity.Question;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +16,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 public class Lab03GameImpl extends Lab03Game {
+  private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+  private static final Random rand = new Random();
 
   /**
    * Creates a new Player or retrieves it from the database.
@@ -34,9 +37,10 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object getOrCreatePlayer(String playerName) {
-    Query query = lab02EntityManager.getEntityManager()
-        .createQuery("SELECT p from Player p where p.username = :name");
+    EntityManager em = lab02EntityManager.getEntityManager();
+    Query query = em.createQuery("SELECT p from Player p where p.username = :name");
     query.setParameter("name", playerName);
+    em.close();
     Player existingPlayer;
     try {
       existingPlayer = (Player) query.getSingleResult();
@@ -63,7 +67,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object interactiveGetOrCreatePlayer() {
-    Scanner scanner = new Scanner(System.in);
+
     System.out.println("Gebe deinen Namen ein: ");
     String userInput = scanner.nextLine();
     return getOrCreatePlayer(userInput);
@@ -90,18 +94,19 @@ public class Lab03GameImpl extends Lab03Game {
   @Override
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
     List<Question> questions = new ArrayList<Question>();
-    Random rand = new Random();
 
     for (int i = 0; i < categories.size(); i++) {
       int catId = (int) categories.get(i);
+      EntityManager em = lab02EntityManager.getEntityManager();
       String query = "SELECT q FROM Question q WHERE q.category.categoryId = :catId";
-      List<Question> allQuestion = lab02EntityManager.getEntityManager().createQuery(query, Question.class)
+      List<Question> allQuestion = em.createQuery(query, Question.class)
           .setParameter("catId", catId).getResultList();
+      em.close();
       int numQuestions = Math.min(allQuestion.size(), amountOfQuestionsForCategory);
       int nextQuestionIndex;
       Question selectedQuestion;
       while (numQuestions > 0) {
-        nextQuestionIndex = rand.nextInt(numQuestions);
+        nextQuestionIndex = rand.nextInt(allQuestion.size());
         selectedQuestion = allQuestion.get(nextQuestionIndex);
         allQuestion.remove(nextQuestionIndex);
         questions.add(selectedQuestion);
@@ -127,37 +132,32 @@ public class Lab03GameImpl extends Lab03Game {
     String userInput = "";
     int number;
     List<Integer> categoriesToPlay = new ArrayList<>();
-    List <Category> allCategories;
-    Scanner scanner = new Scanner(System.in);
+    List<Category> allCategories;
+
+    EntityManager em = lab02EntityManager.getEntityManager();
     int catCounter = 0;
     while (true) {
       String query = "SELECT c FROM Category c";
-      allCategories = lab02EntityManager.getEntityManager().createQuery(query, Category.class).getResultList();
+      allCategories = em.createQuery(query, Category.class).getResultList();
       for (Category c: allCategories) {
         System.out.println(c.getCategoryId() + ": " + c.getName());
       }
       System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
       userInput = scanner.nextLine();
-      if (userInput.equalsIgnoreCase("x") && catCounter >= 2) {
-        break;
-      } else {
+      if (!userInput.equalsIgnoreCase("x") && catCounter < 2) {
         try {
           int catId = Integer.parseInt(userInput);
-          boolean catExists = false;
-          for (Category c : allCategories) {
-            if(c.getCategoryId() == catId)
-              catExists = true;
-          }
-          if (!catExists)
-            throw new NumberFormatException() ;
           categoriesToPlay.add(catId);
           System.out.println("Kategorie: " + catId + " erfolgreich hinzugefügt");
           ++catCounter;
         } catch (NumberFormatException e) {
           System.out.println("Fehlerhafte Eingabe, bitte versuche es erneut.");
         }
+      } else {
+        break;
       }
     }
+    em.close();
     while (true) {
       System.out.println("Gebe die Anzahl an Fragen pro Kategorie an");
       userInput = scanner.nextLine();
@@ -192,8 +192,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object createGame(Object player, List<?> questions) {
-    Game currentGame = new Game ((Player) player, (List<Question>) questions);
-    return currentGame;
+    return new Game((Player) player, (List<Question>) questions);
   }
 
   /**
@@ -209,17 +208,12 @@ public class Lab03GameImpl extends Lab03Game {
   public void playGame(Object game) {
     Game currentGame = (Game) game;
     List<GameQuestion> questionList = currentGame.getQuestionList();
-    Random rand = new Random();
-    currentGame.setStartTime();
-    for (int i = 0; i < questionList.size(); ++i) {
-      Question currentQuestion = questionList.get(i).getQuestion();
+    currentGame.startTimer();
+    for (GameQuestion gameQuestion : questionList) {
+      Question currentQuestion = gameQuestion.getQuestion();
       int ans = rand.nextInt(4) + 1;
-      if (currentQuestion.checkAnswer(ans))
-        questionList.get(i).setCorrect(true);
-      else
-        questionList.get(i).setCorrect(false);
+      gameQuestion.setCorrect(currentQuestion.checkAnswer(ans));
     }
-    currentGame.setEndTime();
   }
 
   /**
@@ -235,28 +229,27 @@ public class Lab03GameImpl extends Lab03Game {
   public void interactivePlayGame(Object game) {
     Game currentGame = (Game) game;
     String userInput = "";
-    Scanner scanner = new Scanner(System.in);
+
     List<GameQuestion> questionList = currentGame.getQuestionList();
-    currentGame.setStartTime();
-    for (int i = 0; i < questionList.size(); ++i) {
-      Question currentQuestion = questionList.get(i).getQuestion();
+    currentGame.startTimer();
+    for (GameQuestion gameQuestion : questionList) {
+      Question currentQuestion = gameQuestion.getQuestion();
       System.out.println(currentQuestion.getText());
       for (int j = 0; j < currentQuestion.getAnswerList().size(); ++j) {
         ++j;
-        System.out.println(j+ ": " + currentQuestion.getAnswerList().get(--j).getText());
+        System.out.println(j + ": " + currentQuestion.getAnswerList().get(--j).getText());
       }
       userInput = scanner.nextLine();
       int ans = Integer.parseInt(userInput);
       if (currentQuestion.checkAnswer(ans)) {
-        questionList.get(i).setCorrect(true);
+        gameQuestion.setCorrect(true);
         System.out.println("Huraaa!! Correct");
-      }
-      else {
-        questionList.get(i).setCorrect(false);
+      } else {
+        gameQuestion.setCorrect(false);
         System.out.println("Loser! ");
       }
     }
-    currentGame.setEndTime();
+    currentGame.stopTimer();
   }
 
   /**
@@ -274,15 +267,16 @@ public class Lab03GameImpl extends Lab03Game {
     try {
       tx.begin();
 
-      if (!em.contains(currentGame))
+      if (!em.contains(currentGame)) {
         em.persist(currentGame);
-
-      if (!em.contains(p))
+      }
+      if (!em.contains(p)) {
         em.persist(p);
-
+      }
       for (GameQuestion q : questions) {
-        if(!em.contains(q))
+        if (!em.contains(q)) {
           em.persist(q);
+        }
       }
       tx.commit();
     } catch (RuntimeException e) {
@@ -291,9 +285,7 @@ public class Lab03GameImpl extends Lab03Game {
       }
       throw e;
     } finally {
-      if (em != null) {
-        em.close();
-      }
+      em.close();
     }
   }
 }

@@ -95,6 +95,13 @@ public class Question {
     return correctAnswer;
   }
 
+
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(questionId);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -104,11 +111,8 @@ public class Question {
       return false;
     }
     Question question = (Question) o;
-    return questionId == question.questionId;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(questionId);
+    return questionId == question.questionId && correctAnswer == question.correctAnswer
+        && Objects.equals(text, question.text) && Objects.equals(answerList,
+        question.answerList) && Objects.equals(category, question.category);
   }
 }
