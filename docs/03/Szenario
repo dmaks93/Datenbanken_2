@@ -1,0 +1,24 @@
+(I) Anmeldung / Registrierung
+    1. Der Spieler beginnt das Spiel, indem er sein Benutzername eingibt.
+    2. Falls der Spieler bereits existiert, wird er angemeldet, falls nicht wird er registriert.
+
+(II) Auswahl von Kategorien und Fragenanzahl
+    1. Der Spieler wählt aus einer Liste verfügbarer Kategorien mindestens zwei aus
+    2. Der Spieler gibt die maximale Anzahl von Fragen pro Kategorie an, die er im Verlauf des Spiels gestellt haben möchte.
+        2.1 Besitzt eine Kategorie weniger Fragen als die gewünschte Anzahl, so werden alle Fragen dieser Kategorie ausgewählt.
+
+ (III) Initialisierung Spieles
+    1. Das Spiel lädt eine zufällige Liste von Fragen aus der Datenbank basierend auf den ausgewählten Kategorien und
+       der angegebenen Anzahl von Fragen pro Kategorie.
+
+(IV) Spielablauf
+    1. Dem Spieler werden Fragen mit den dazugehörigen Antwortmöglichkeiten präsentiert.
+    2. Der Spieler wählt eine Antwort aus den vorgegebenen Optionen aus.
+    3. Das Spiel gibt sofort Feedback, ob die Antwort richtig oder falsch ist.
+
+(V) Spielende und Auswertung
+    1. Das Spiel endet nach der festgelegten Anzahl von Fragen pro Kategorie.
+    2. Für jedes Spiel werden folgende Informationen gespeichert: Spielername, Startzeitpunkt, Endzeitpunkt,
+       Liste der ausgewählten Kategorien, Liste der gestellten Fragen und die Information, ob jede Frage korrekt beantwortet wurde.
+        2.1 Die Spielinformationen werden in der Datenbank gespeichert.
+

@@ -6,13 +6,13 @@ import de.hda.fbi.db2.stud.entity.Answer;
 import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class Lab01DataImpl extends Lab01Data {
+  static int answerId = 0;
   HashMap<Integer, Question> questionList = new HashMap<>();
   HashMap<String, Category> categoryList = new HashMap<>();
 
@@ -28,30 +28,22 @@ public class Lab01DataImpl extends Lab01Data {
 
   @Override
   public void loadCsvFile(List<String[]> csvLines) {
-    boolean firstRow = true;
     List<Answer> answerBuffer;
     Category categoryBuffer = null;
     Question questionBuffer;
-    for (String[] row : csvLines) {
-      if (!firstRow) {
+    for (int i = 1; i < csvLines.size(); i++) {
+      String[] row = csvLines.get(i);
+      answerBuffer = new ArrayList<>();
+      categoryBuffer = loadCategory(row[7]);
+      questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
+          Integer.parseInt(row[6]), categoryBuffer);
 
-        answerBuffer = new ArrayList<>();
-        categoryBuffer = loadCategory(row[7]);
-        questionBuffer = new Question(Integer.parseInt(row[0]), row[1], answerBuffer,
-            Integer.parseInt(row[6]), categoryBuffer);
-
-        for (int i = 2; i < 6; i++) {
-          answerBuffer.add(new Answer(row[i]));
-        }
-        for (Answer a: answerBuffer) {
-          a.setQuestion(questionBuffer);
-        }
-        questionList.put(questionBuffer.getId(), questionBuffer);
-        categoryBuffer.addQuestion(questionBuffer);
-
-      } else {
-        firstRow = false;
+      for (int j = 2; j < 6; j++) {
+        answerId++;
+        answerBuffer.add(new Answer(answerId, row[j]));
       }
+      questionList.put(questionBuffer.getQuestionId(), questionBuffer);
+      categoryBuffer.addQuestion(questionBuffer);
     }
     this.printOut();
   }
@@ -69,7 +61,7 @@ public class Lab01DataImpl extends Lab01Data {
       List<Question> catQuestions = c.getValue().getQuestions();
 
       for (Question q : catQuestions) {
-        int questionId = q.getId();
+        int questionId = q.getQuestionId();
         System.out.print("ID: " + questionId + ": " + q.getText());
         System.out.print("\n");
         System.out.print("Possible Answers: " + "\n");

@@ -10,16 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Category", schema = "db2")
 public class Category {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cat_id_generator")
   @SequenceGenerator(name = "cat_id_generator", sequenceName = "db2.cat_id")
-  private int id;
+  private int categoryId;
   @Column(name = "name", unique = true)
   private String name;
 
@@ -58,22 +56,23 @@ public class Category {
    */
   public void removeQuestion(int id) {
     for (int i = 0; i < questionList.size(); i++) {
-      if (questionList.get(i).getId() == id) {
+      if (questionList.get(i).getQuestionId() == id) {
         questionList.remove(i);
       }
     }
   }
 
-  public int getId() {
-    return id;
+  public int getCategoryId() {
+    return categoryId;
   }
 
 
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(categoryId);
   }
+
 
   @Override
   public boolean equals(Object o) {
@@ -84,7 +83,8 @@ public class Category {
       return false;
     }
     Category category = (Category) o;
-    return id == category.id;
+    return categoryId == category.categoryId && Objects.equals(name, category.name)
+        && Objects.equals(questionList, category.questionList);
   }
 }
 

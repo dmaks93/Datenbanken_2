@@ -2,24 +2,22 @@ package de.hda.fbi.db2.stud.entity;
 
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+
 
 @Entity
-@Table(name = "Question", schema = "db2")
 public class Question {
   @Id
-  private int id;
+  private int questionId;
   private String text;
   private int correctAnswer;
-  @OneToMany(mappedBy = "question")
-  @OrderBy
+
+  @ElementCollection
+  @OrderColumn(name = "index")
   private List<Answer> answerList;
   @ManyToOne
   private Category category;
@@ -37,15 +35,15 @@ public class Question {
 
   public Question(int id, String text, List<Answer> answerList, int correctAnswer,
       Category category) {
-    this.id = id;
+    this.questionId = id;
     this.text = text;
     this.answerList = answerList;
     this.correctAnswer = correctAnswer;
     this.category = category;
   }
 
-  public int getId() {
-    return id;
+  public int getQuestionId() {
+    return questionId;
   }
 
   public String getText() {
@@ -69,8 +67,8 @@ public class Question {
     return category;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setQuestionId(int questionId) {
+    this.questionId = questionId;
   }
 
   public void setText(String text) {
@@ -97,6 +95,13 @@ public class Question {
     return correctAnswer;
   }
 
+
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(questionId);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -106,11 +111,8 @@ public class Question {
       return false;
     }
     Question question = (Question) o;
-    return id == question.id;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
+    return questionId == question.questionId && correctAnswer == question.correctAnswer
+        && Objects.equals(text, question.text) && Objects.equals(answerList,
+        question.answerList) && Objects.equals(category, question.category);
   }
 }
