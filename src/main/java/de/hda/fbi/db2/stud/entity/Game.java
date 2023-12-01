@@ -73,10 +73,6 @@ public class Game {
         game.player) && Objects.equals(gameQuestions, game.gameQuestions);
   }
 
-  public void setGameId(int gameId) {
-    this.gameId = gameId;
-  }
-
   public int getGameId() {
     return gameId;
   }

@@ -28,20 +28,20 @@ public class GameQuestion {
     this.game = game;
   }
 
-  public Question getQuestion() {
-    return question;
-  }
-
-  public Game getGame() {
-    return game;
-  }
-
   public boolean isCorrect() {
     return isCorrect;
   }
 
   public void setCorrect(boolean correct) {
     isCorrect = correct;
+  }
+
+  public Question getQuestion() {
+    return question;
+  }
+
+  public Game getGame() {
+    return game;
   }
 
   @Override
