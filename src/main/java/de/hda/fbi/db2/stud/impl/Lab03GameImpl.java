@@ -138,17 +138,24 @@ public class Lab03GameImpl extends Lab03Game {
       }
       System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
       userInput = scanner.nextLine();
-      if (!userInput.equalsIgnoreCase("x") && catCounter < 2) {
+      if (userInput.equalsIgnoreCase("x") && catCounter >= 2) {
+        break;
+      } else {
         try {
           int catId = Integer.parseInt(userInput);
+          boolean catExists = false;
+          for (Category c : allCategories) {
+            if(c.getCategoryId() == catId)
+              catExists = true;
+          }
+          if (!catExists)
+            throw new NumberFormatException() ;
           categoriesToPlay.add(catId);
           System.out.println("Kategorie: " + catId + " erfolgreich hinzugefügt");
           ++catCounter;
         } catch (NumberFormatException e) {
           System.out.println("Fehlerhafte Eingabe, bitte versuche es erneut.");
         }
-      } else {
-        break;
       }
     }
     while (true) {
@@ -203,6 +210,7 @@ public class Lab03GameImpl extends Lab03Game {
     Game currentGame = (Game) game;
     List<GameQuestion> questionList = currentGame.getQuestionList();
     Random rand = new Random();
+    currentGame.setStartTime();
     for (int i = 0; i < questionList.size(); ++i) {
       Question currentQuestion = questionList.get(i).getQuestion();
       int ans = rand.nextInt(4) + 1;
@@ -211,7 +219,7 @@ public class Lab03GameImpl extends Lab03Game {
       else
         questionList.get(i).setCorrect(false);
     }
-    persistGame(currentGame);
+    currentGame.setEndTime();
   }
 
   /**
@@ -229,6 +237,7 @@ public class Lab03GameImpl extends Lab03Game {
     String userInput = "";
     Scanner scanner = new Scanner(System.in);
     List<GameQuestion> questionList = currentGame.getQuestionList();
+    currentGame.setStartTime();
     for (int i = 0; i < questionList.size(); ++i) {
       Question currentQuestion = questionList.get(i).getQuestion();
       System.out.println(currentQuestion.getText());
@@ -247,7 +256,7 @@ public class Lab03GameImpl extends Lab03Game {
         System.out.println("Loser! ");
       }
     }
-    persistGame(currentGame);
+    currentGame.setEndTime();
   }
 
   /**
