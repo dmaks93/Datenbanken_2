@@ -80,4 +80,20 @@ public class Game {
   public int getGameId() {
     return gameId;
   }
+
+  public void startTimer(){
+    this.startTime = new Date();
+  }
+
+  public void stopTimer(){
+    this.endTime = new Date();
+  }
+
+  public Date getStartTime() {
+    return startTime;
+  }
+
+  public Date getEndTime() {
+    return endTime;
+  }
 }
