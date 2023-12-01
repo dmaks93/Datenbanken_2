@@ -81,11 +81,11 @@ public class Game {
     return gameId;
   }
 
-  public void startTimer(){
+  public void startTimer() {
     this.startTime = new Date();
   }
 
-  public void stopTimer(){
+  public void stopTimer() {
     this.endTime = new Date();
   }
 
