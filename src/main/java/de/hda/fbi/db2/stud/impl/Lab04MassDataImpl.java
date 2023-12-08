@@ -38,7 +38,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
 
         }
 
-        lab03Game.getQuestions()
+        lab03Game.getQuestions();
 
       }
     }
