@@ -14,7 +14,7 @@ public class Player {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
   @SequenceGenerator(name = "player_id_generator", sequenceName = "player_id")
   private int playerId;
-  @Column(name = "username")
+  @Column(name = "username", unique = true)
   private String username;
 
   public Player() {}
