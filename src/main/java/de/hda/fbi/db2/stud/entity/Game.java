@@ -19,7 +19,7 @@ import javax.persistence.Temporal;
 public class Game {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_id_generator")
-  @SequenceGenerator(name = "game_id_generator", sequenceName = "db2.game_id")
+  @SequenceGenerator(name = "game_id_generator", sequenceName = "game_id")
   private int gameId;
   @Temporal(TIMESTAMP)
   private Date startTime;

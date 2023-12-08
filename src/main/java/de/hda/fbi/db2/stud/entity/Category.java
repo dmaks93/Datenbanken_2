@@ -16,7 +16,7 @@ public class Category {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cat_id_generator")
-  @SequenceGenerator(name = "cat_id_generator", sequenceName = "db2.cat_id")
+  @SequenceGenerator(name = "cat_id_generator", sequenceName = "cat_id")
   private int categoryId;
   @Column(name = "name", unique = true)
   private String name;

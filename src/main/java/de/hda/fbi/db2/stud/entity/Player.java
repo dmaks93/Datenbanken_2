@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
-  @SequenceGenerator(name = "player_id_generator", sequenceName = "db2.player_id")
+  @SequenceGenerator(name = "player_id_generator", sequenceName = "player_id")
   private int playerId;
   @Column(name = "username")
   private String username;
