@@ -96,8 +96,8 @@ public class Lab03GameImpl extends Lab03Game {
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
     List<Question> questions = new ArrayList<Question>();
 
-    for (int i = 0; i < categories.size(); i++) {
-      int catId = (int) categories.get(i);
+    for (Object category : categories) {
+      int catId = (int) category;
       EntityManager em = lab02EntityManager.getEntityManager();
       String query = "SELECT q FROM Question q WHERE q.category.categoryId = :catId";
       List<Question> allQuestion = em.createQuery(query, Question.class)
