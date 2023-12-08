@@ -17,7 +17,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
     String pName;
     int numCategory;
     int numQuestion;
-    List<Category> categoryTo = new ArrayList<>();
+    List<Category> categorysToPlay = new ArrayList<>();
     List<Category> allCategories = new ArrayList<>();
     Random rand = new Random();
     int randomInt;
@@ -33,13 +33,11 @@ public class Lab04MassDataImpl extends Lab04MassData {
         allCategories = em.createQuery(query, Category.class).getResultList();
         for (int k = 0; k < numCategory; k++) {
           randomInt = rand.nextInt(allCategories.size());
-          categoryList.add(allCategories.get(randomInt));
+          categorysToPlay.add(allCategories.get(randomInt));
           allCategories.remove(randomInt);
 
         }
-
         lab03Game.getQuestions();
-
       }
     }
   }
