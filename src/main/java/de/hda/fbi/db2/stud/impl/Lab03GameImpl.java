@@ -94,24 +94,17 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
-    List<Question> questions = new ArrayList<Question>();
-
-    for (Object category : categories) {
-      int catId = (int) category;
-      EntityManager em = lab02EntityManager.getEntityManager();
-      String query = "SELECT q FROM Question q WHERE q.category.categoryId = :catId";
-      List<Question> allQuestion = em.createQuery(query, Question.class)
-          .setParameter("catId", catId).getResultList();
-      em.close();
-      int numQuestions = Math.min(allQuestion.size(), amountOfQuestionsForCategory);
-      int nextQuestionIndex;
-      Question selectedQuestion;
-      while (numQuestions > 0) {
-        nextQuestionIndex = rand.nextInt(allQuestion.size());
-        selectedQuestion = allQuestion.get(nextQuestionIndex);
-        allQuestion.remove(nextQuestionIndex);
-        questions.add(selectedQuestion);
-        --numQuestions;
+    List<Question> questions = new ArrayList<>();
+    List<Category> categoryList = (List<Category>) categories;
+    List<Question> allQuestions = new ArrayList<>();
+    for (Category category : categoryList) {
+      allQuestions = category.getQuestions();
+      int numQuestions = Math.min(allQuestions.size(), amountOfQuestionsForCategory);
+      int randomIndex;
+      for (int i = 0; i < numQuestions; i++) {
+        randomIndex = rand.nextInt(allQuestions.size());
+        questions.add(allQuestions.get(randomIndex));
+        allQuestions.remove(randomIndex);
       }
     }
     return questions;

@@ -38,6 +38,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
         allCategories = em.createQuery(query, Category.class).getResultList();
         for (int k = 0; k < numCategory; k++) {
           randomInt = rand.nextInt(allCategories.size());
+          System.out.println("Game: " + j + ", Category: " + randomInt);
           categorysToPlay.add(allCategories.get(randomInt).getCategoryId());
           allCategories.remove(randomInt);
         }
