@@ -19,7 +19,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
 
     int numCategory;
     int numQuestions;
-    List<Integer> categorysToPlay = new ArrayList<>();
+    List<Category> categoriesToPlay = new ArrayList<>();
     List<Category> allCategories = new ArrayList<>();
     List<Question> gameQuestions = new ArrayList<>();
     Random rand = new Random();
@@ -39,10 +39,10 @@ public class Lab04MassDataImpl extends Lab04MassData {
         for (int k = 0; k < numCategory; k++) {
           randomInt = rand.nextInt(allCategories.size());
           System.out.println("Game: " + j + ", Category: " + randomInt);
-          categorysToPlay.add(allCategories.get(randomInt).getCategoryId());
+          categoriesToPlay.add(allCategories.get(randomInt));
           allCategories.remove(randomInt);
         }
-        gameQuestions = (List<Question>) lab03Game.getQuestions(categorysToPlay, numQuestions);
+        gameQuestions = (List<Question>) lab03Game.getQuestions(categoriesToPlay, numQuestions);
         game = (Game) lab03Game.createGame(player, gameQuestions);
         lab03Game.playGame(game);
         lab03Game.persistGame(game);

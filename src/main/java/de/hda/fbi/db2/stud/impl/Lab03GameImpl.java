@@ -96,7 +96,7 @@ public class Lab03GameImpl extends Lab03Game {
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
     List<Question> questions = new ArrayList<>();
     List<Category> categoryList = (List<Category>) categories;
-    List<Question> allQuestions = new ArrayList<>();
+    List<Question> allQuestions;
     for (Category category : categoryList) {
       allQuestions = category.getQuestions();
       int numQuestions = Math.min(allQuestions.size(), amountOfQuestionsForCategory);
@@ -125,13 +125,13 @@ public class Lab03GameImpl extends Lab03Game {
   public List<?> interactiveGetQuestions() {
     String userInput = "";
     int number;
-    List<Integer> categoriesToPlay = new ArrayList<>();
+    List<Category> categoriesToPlay = new ArrayList<>();
     List<Category> allCategories;
 
     EntityManager em = lab02EntityManager.getEntityManager();
     int catCounter = 0;
     while (true) {
-      String query = "SELECT c FROM Category c";
+      String query = "SELECT c FROM Category c ORDER BY c.categoryId";
       allCategories = em.createQuery(query, Category.class).getResultList();
       for (Category c: allCategories) {
         System.out.println(c.getCategoryId() + ": " + c.getName());
@@ -141,7 +141,7 @@ public class Lab03GameImpl extends Lab03Game {
       if (!userInput.equalsIgnoreCase("x") && catCounter < 2) {
         try {
           int catId = Integer.parseInt(userInput);
-          categoriesToPlay.add(catId);
+          categoriesToPlay.add(allCategories.get(catId));
           System.out.println("Kategorie: " + catId + " erfolgreich hinzugefügt");
           ++catCounter;
         } catch (NumberFormatException e) {
