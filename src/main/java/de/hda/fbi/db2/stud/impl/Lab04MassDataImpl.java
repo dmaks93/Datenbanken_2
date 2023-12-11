@@ -45,6 +45,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
         gameQuestions = (List<Question>) lab03Game.getQuestions(categoriesToPlay, numQuestions);
         game = (Game) lab03Game.createGame(player, gameQuestions);
         lab03Game.playGame(game);
+        //game.set
         lab03Game.persistGame(game);
       }
     }
