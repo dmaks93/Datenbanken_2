@@ -2,6 +2,9 @@ package de.hda.fbi.db2.stud.entity;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,5 +94,26 @@ public class Game {
 
   public Date getEndTime() {
     return endTime;
+  }
+
+  /**
+   * Sets the end time of the game using a string representation of the date.
+   *
+   * @param customTime the end time as a string
+   * @throws ParseException if the string is not in the expected date format
+   */
+  public void setCustomTime(String customTime) throws ParseException {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    Date startTime = dateFormat.parse(customTime);
+    this.startTime = startTime;
+
+    // Convert Date to LocalDateTime
+    LocalDateTime localDateTime = this.startTime.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+
+    // Increment by 1 hour
+    localDateTime = localDateTime.plusHours(1);
+
+    // Convert back to Date
+    this.endTime = java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
   }
 }
