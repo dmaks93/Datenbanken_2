@@ -186,8 +186,7 @@ public class Lab03GameImpl extends Lab03Game {
    *
    * @param player    The Player which shall play the game.
    * @param questions The Questions which shall be asked during the game.
-   * @return A Game object which contains an unplayed game for the given player with the given
-   * questions.
+   * @return A Game object which contains an unplayed game for the given player with the given q
    */
   @Override
   public Object createGame(Object player, List<?> questions) {

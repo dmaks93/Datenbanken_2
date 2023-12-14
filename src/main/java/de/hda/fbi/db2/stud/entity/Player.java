@@ -14,7 +14,8 @@ import javax.persistence.SequenceGenerator;
 @Cacheable()
 @Entity
 @NamedQueries({
-    @NamedQuery (name = "findPlayerByName", query = "SELECT p from Player p where p.username = :name") })
+    @NamedQuery (name = "findPlayerByName", query = "SELECT p from Player p where"
+        + " p.username = :name") })
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
