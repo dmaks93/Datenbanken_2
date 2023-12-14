@@ -59,6 +59,6 @@ public class GameQuestion {
 
   @Override
   public int hashCode() {
-    return this.question.getQuestionId() + this.game.getGameId();
+    return Objects.hash(question, game);
   }
 }

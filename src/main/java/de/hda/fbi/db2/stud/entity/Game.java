@@ -2,7 +2,11 @@ package de.hda.fbi.db2.stud.entity;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -17,9 +21,10 @@ import javax.persistence.Temporal;
 
 @Entity
 public class Game {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_id_generator")
-  @SequenceGenerator(name = "game_id_generator", sequenceName = "game_id")
+  @SequenceGenerator(name = "game_id_generator", sequenceName = "game_id", allocationSize = 1)
   private int gameId;
   @Temporal(TIMESTAMP)
   private Date startTime;
@@ -30,18 +35,21 @@ public class Game {
   @OneToMany(mappedBy = "game")
   private List<GameQuestion> gameQuestions;
 
-  public Game() {}
+  public Game() {
+  }
 
   /**
    * creates a new game with the player and a list of questions. the questions are written into a
-   * gameAnswers list which remembers each question and whether they were answered correctly or not.
-   * @param player the player
+   * gameAnswers list which remembers each question and whether they were answered correctly or
+   * not.
+   *
+   * @param player    the player
    * @param questions the question
    */
   public Game(Player player, List<Question> questions) {
     this.player = player;
     this.gameQuestions = new ArrayList<GameQuestion>();
-    for (Question q: questions) {
+    for (Question q : questions) {
       this.gameQuestions.add(new GameQuestion(this, q));
     }
   }
@@ -91,5 +99,25 @@ public class Game {
 
   public Date getEndTime() {
     return endTime;
+  }
+
+  /**
+   * to set a custom time.
+   * @param dayOfMonth day of month
+   * @param hour hcustom hour
+   * @param minutes hcustom minute
+   * @throws ParseException ecxeption
+   */
+  public void setCustomTime(int dayOfMonth, int hour, int minutes) throws ParseException {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    Date startDate = dateFormat.parse(String.format("%02d.01.2024 %02d:%02d", dayOfMonth, hour,
+        minutes));
+    this.startTime = startDate;
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(startDate);
+    calendar.add(Calendar.MINUTE, 5);
+    Date endDate = calendar.getTime();
+    this.endTime = endDate;
   }
 }
