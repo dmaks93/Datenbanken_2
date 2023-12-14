@@ -102,14 +102,16 @@ public class Game {
   }
 
   /**
-   * @param dayOfMonth
-   * @param hour
-   * @param minutes
-   * @throws ParseException
+   * to set a custom time.
+   * @param dayOfMonth day of month
+   * @param hour hcustom hour
+   * @param minutes hcustom minute
+   * @throws ParseException ecxeption
    */
   public void setCustomTime(int dayOfMonth, int hour, int minutes) throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    Date startDate = dateFormat.parse(String.format("%02d.01.2024 %02d:%02d", dayOfMonth, hour, minutes));
+    Date startDate = dateFormat.parse(String.format("%02d.01.2024 %02d:%02d", dayOfMonth, hour,
+        minutes));
     this.startTime = startDate;
 
     Calendar calendar = Calendar.getInstance();
