@@ -17,6 +17,8 @@ import javax.persistence.EntityManager;
 
 public class Lab04MassDataImpl extends Lab04MassData {
 
+  private Random rand = new Random();
+
   @Override
   public void createMassData() {
     int players = 10000;
@@ -30,7 +32,7 @@ public class Lab04MassDataImpl extends Lab04MassData {
     Set<Category> allCategories = new HashSet<>();
     List<Category> playableCategories;
     List<Question> gameQuestions = new ArrayList<>();
-    Random rand = new Random();
+
     int randomInt;
     String query;
     Player player;
