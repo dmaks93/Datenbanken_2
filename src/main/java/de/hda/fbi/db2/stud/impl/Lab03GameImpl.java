@@ -68,7 +68,6 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object interactiveGetOrCreatePlayer() {
-
     System.out.println("Gebe deinen Namen ein: ");
     String userInput = scanner.nextLine();
     return getOrCreatePlayer(userInput);
@@ -208,6 +207,7 @@ public class Lab03GameImpl extends Lab03Game {
       int ans = rand.nextInt(4) + 1;
       gameQuestion.setCorrect(currentQuestion.checkAnswer(ans));
     }
+    currentGame.stopTimer();
   }
 
   /**
@@ -240,7 +240,7 @@ public class Lab03GameImpl extends Lab03Game {
         System.out.println("Huraaa!! Correct");
       } else {
         gameQuestion.setCorrect(false);
-        System.out.println("Loser! ");
+        System.out.println("Loser!");
       }
     }
     currentGame.stopTimer();
