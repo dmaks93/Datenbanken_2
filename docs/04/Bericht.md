@@ -16,17 +16,16 @@ Hash Map anstelle eines Arrays um alle Kategorien, die für ein jeweiliges Spiel
 
 **Dritte Messung**:
 
-Implementierung von Batch Transaction. Es werden 1000 Spiele in eine Transaktion abgelegt.
+Implementierung von Batch Transaction. Es werden 1000 Spiele in eine Transaktion abgelegt. In der folgenden Tabelle haben wir die optimierte Laufzeit für 2 verschiedene Geräte getestet.
 
-Vergleich der Durchlaufzeit mit flush() am Ende jeder im Entity Manager vs ohne flush:
 
-| Gerät   | flush()   | ohne flush() |
-|:--------|:----------|:------------:| 
-| Laptop  | 00:05:50h |  00:05:58h   |
-| Desktop | 00:05:10h |  00:00:64h   |
 
-Wir haben uns entschieden flush() und clear() nicht explizit zu nutzen da beide Methoden bereits beim Commit der Transaktion implizit aufgerufen werden.
-und keine Performancegewinne garantieren.
+| Gerät   |  Laufzeit nach Optimierungen  |
+|:--------|:-----------------------------:| 
+| Laptop  |           00:05:58h           |
+| Desktop |           00:00:64h           |
+
+Wir haben uns entschieden flush() und clear() nicht explizit zu nutzen da jeweils flush() bereits beim Commit der Transaktion implizit aufgerufen wird und clear() beim Schließen des Entity-Managers, welchen wir für jeden Batch aufs neue öffnen implizit ausgeführt wird.
 
 
 
