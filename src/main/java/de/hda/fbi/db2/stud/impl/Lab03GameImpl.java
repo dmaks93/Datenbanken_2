@@ -21,11 +21,7 @@ public class Lab03GameImpl extends Lab03Game {
   private static final Random rand = new Random();
   private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
   private EntityManager em;
-  private EntityManager em2;
   private List<Category> allCategories;
-  private EntityTransaction tx;
-  private int batch = 0;
-  private int batchSize = 1000;
 
   @Override
   public void init() {
@@ -263,38 +259,33 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public void persistGame(Object game) {
+    EntityManager em = lab02EntityManager.getEntityManager();
+    EntityTransaction tx = em.getTransaction();
     Game currentGame = (Game) game;
     Player p = currentGame.getPlayer();
     List<GameQuestion> questions = currentGame.getQuestionList();
-    if (batch == 0) {
-      em2 = lab02EntityManager.getEntityManager();
-      tx = em2.getTransaction();
-      tx.begin();
-    }
     try {
+      tx.begin();
 
-      if (!em2.contains(currentGame)) {
-        em2.persist(currentGame);
+      if (!em.contains(currentGame)) {
+        em.persist(currentGame);
       }
-      if (!em2.contains(p) && em2.find(Player.class, p.getPlayerId()) == null) {
-        em2.persist(p);
+      if (!em.contains(p) && em.find(Player.class, p.getPlayerId()) == null) {
+        em.persist(p);
       }
       for (GameQuestion q : questions) {
-        if (!em2.contains(q)) {
-          em2.persist(q);
+        if (!em.contains(q)) {
+          em.persist(q);
         }
       }
-      batch++;
-      if (batch == batchSize) {
-        em2.flush();
-        tx.commit();
-        batch = 0;
-      }
+      tx.commit();
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
         tx.rollback();
       }
       throw e;
+    } finally {
+      em.close();
     }
   }
 }
