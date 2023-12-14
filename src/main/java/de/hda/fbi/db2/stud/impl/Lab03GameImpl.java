@@ -265,9 +265,8 @@ public class Lab03GameImpl extends Lab03Game {
     Game currentGame = (Game) game;
     Player p = currentGame.getPlayer();
     List<GameQuestion> questions = currentGame.getQuestionList();
-    em2 = lab02EntityManager.getEntityManager();
     if (batch == 0) {
-
+      em2 = lab02EntityManager.getEntityManager();
       tx = em2.getTransaction();
       tx.begin();
     }
@@ -288,14 +287,13 @@ public class Lab03GameImpl extends Lab03Game {
       if (batch == batchSize) {
         tx.commit();
         batch = 0;
+        em2.close();
       }
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
         tx.rollback();
       }
       throw e;
-    } finally {
-      em2.close();
     }
   }
 }
