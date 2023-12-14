@@ -17,11 +17,20 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public class Lab03GameImpl extends Lab03Game {
-  private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+
   private static final Random rand = new Random();
-  private EntityManager em = lab02EntityManager.getEntityManager();
-  private String query = "SELECT c FROM Category c ORDER BY c.categoryId";
-  private List<Category> allCategories = em.createQuery(query, Category.class).getResultList();
+  private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+  private EntityManager em;
+  private List<Category> allCategories;
+
+  @Override
+  public void init() {
+    super.init();
+    em = lab02EntityManager.getEntityManager();
+    String query = "SELECT c FROM Category c ORDER BY c.categoryId";
+    allCategories = em.createQuery(query, Category.class).getResultList();
+    em.close();
+  }
 
   /**
    * Creates a new Player or retrieves it from the database.
@@ -130,7 +139,7 @@ public class Lab03GameImpl extends Lab03Game {
     List<Category> categoriesToPlay = new ArrayList<>();
     int catCounter = 0;
     while (true) {
-      for (Category c: allCategories) {
+      for (Category c : allCategories) {
         System.out.println(c.getCategoryId() + ": " + c.getName());
       }
       System.out.println("Gebe die Id der Kategorie ein: (x beendet die Auswahl)");
