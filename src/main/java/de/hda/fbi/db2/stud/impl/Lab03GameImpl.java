@@ -21,9 +21,11 @@ public class Lab03GameImpl extends Lab03Game {
   private static final Random rand = new Random();
   private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
   private EntityManager em;
+  private EntityManager em2;
   private List<Category> allCategories;
-  private List<Game> games = new ArrayList<>();
-  private long countGame;
+  private EntityTransaction tx;
+  private int batch = 0;
+  private int batchSize = 1000;
 
   @Override
   public void init() {
@@ -261,43 +263,38 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public void persistGame(Object game) {
-    if (countGame != 100) {
-      games.add((Game) game);
-      countGame++;
-    } else {
-      countGame = 0;
-      em = lab02EntityManager.getEntityManager();
-      EntityTransaction tx = em.getTransaction();
-      try {
-        tx.begin();
-        for (Game currentGame : games) {
-          Player p = currentGame.getPlayer();
-          List<GameQuestion> questions = currentGame.getQuestionList();
+    Game currentGame = (Game) game;
+    Player p = currentGame.getPlayer();
+    List<GameQuestion> questions = currentGame.getQuestionList();
+    if (batch == 0) {
+      em2 = lab02EntityManager.getEntityManager();
+      tx = em2.getTransaction();
+      tx.begin();
+    }
+    try {
 
-          if (em.find(Player.class, p.getPlayerId()) == null) {
-            em.persist(p);
-          }
-
-          if (em.find(Game.class, currentGame.getGameId()) == null) {
-            em.persist(currentGame);
-          }
-
-          for (GameQuestion q : questions) {
-            if (!em.contains(q)) {
-              em.persist(q);
-            }
-          }
-        }
-        tx.commit();
-        games.clear();
-      } catch (RuntimeException e) {
-        if (tx != null && tx.isActive()) {
-          tx.rollback();
-        }
-        throw e;
-      } finally {
-        em.close();
+      if (!em2.contains(currentGame)) {
+        em2.persist(currentGame);
       }
+      if (!em2.contains(p) && em2.find(Player.class, p.getPlayerId()) == null) {
+        em2.persist(p);
+      }
+      for (GameQuestion q : questions) {
+        if (!em2.contains(q)) {
+          em2.persist(q);
+        }
+      }
+      batch++;
+      if (batch == batchSize) {
+        em2.flush();
+        tx.commit();
+        batch = 0;
+      }
+    } catch (RuntimeException e) {
+      if (tx != null && tx.isActive()) {
+        tx.rollback();
+      }
+      throw e;
     }
   }
 }
