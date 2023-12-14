@@ -1,6 +1,7 @@
 package de.hda.fbi.db2.stud.entity;
 
 import java.util.Objects;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,15 +11,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
+@Cacheable()
 @Entity
 @NamedQueries({
     @NamedQuery (name = "findPlayerByName", query = "SELECT p from Player p where p.username = :name") })
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
-  @SequenceGenerator(name = "player_id_generator", sequenceName = "player_id")
+  @SequenceGenerator(name = "player_id_generator", sequenceName = "player_id", allocationSize = 1)
   private int playerId;
-  @Column(name = "username")
+  @Column(name = "username", unique = true)
   private String username;
 
   public Player() {}

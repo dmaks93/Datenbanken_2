@@ -5,8 +5,11 @@ import de.hda.fbi.db2.stud.entity.Category;
 import de.hda.fbi.db2.stud.entity.Question;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import de.hda.fbi.db2.stud.entity.Player;
 import de.hda.fbi.db2.stud.entity.Game;
@@ -23,7 +26,8 @@ public class Lab04MassDataImpl extends Lab04MassData {
     int numCategory;
     int numQuestions;
     List<Category> categoriesToPlay = new ArrayList<>();
-    List<Category> allCategories = new ArrayList<>();
+    Set<Category> allCategories = new HashSet<>();
+    List<Category> playableCategories;
     List<Question> gameQuestions = new ArrayList<>();
     Random rand = new Random();
     int randomInt;
@@ -31,7 +35,12 @@ public class Lab04MassDataImpl extends Lab04MassData {
     Player player;
     Game game;
 
+
+
     EntityManager em = lab02EntityManager.getEntityManager();
+    String catQuery = "SELECT c FROM Category c ORDER BY c.categoryId";
+    playableCategories = em.createQuery(catQuery, Category.class).getResultList();
+
     for (int i = 0; i < players; i++) { // each player
       if (i % 1000 == 0) {
         dayOfMonth++;
@@ -47,13 +56,18 @@ public class Lab04MassDataImpl extends Lab04MassData {
         }
         numCategory = rand.nextInt(5);
         numQuestions = rand.nextInt(5);
-        query = "SELECT c FROM Category c";
-        allCategories = em.createQuery(query, Category.class).getResultList();
+        allCategories.addAll(playableCategories);
+        categoriesToPlay.clear(); // Clear the list before selecting new categories
+        Iterator<Category> iterator = allCategories.iterator();
         for (int k = 0; k < numCategory; k++) {
           randomInt = rand.nextInt(allCategories.size());
-          System.out.println("Game: " + j + ", Category: " + randomInt);
-          categoriesToPlay.add(allCategories.get(randomInt));
-          allCategories.remove(randomInt);
+          iterator = allCategories.iterator();
+          for (int m = 0; m < randomInt; m++) {
+            iterator.next();
+          }
+          Category selectedCategory = iterator.next();
+          categoriesToPlay.add(selectedCategory);
+          iterator.remove(); // Remove the selected category
         }
         gameQuestions = (List<Question>) lab03Game.getQuestions(categoriesToPlay, numQuestions);
         game = (Game) lab03Game.createGame(player, gameQuestions);
