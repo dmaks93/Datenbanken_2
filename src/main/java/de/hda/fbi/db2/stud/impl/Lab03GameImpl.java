@@ -22,6 +22,8 @@ public class Lab03GameImpl extends Lab03Game {
   private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
   private EntityManager em;
   private List<Category> allCategories;
+  private List<Game> games = new ArrayList<>();
+  private long countGame;
 
   @Override
   public void init() {
@@ -259,33 +261,43 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public void persistGame(Object game) {
-    EntityManager em = lab02EntityManager.getEntityManager();
-    EntityTransaction tx = em.getTransaction();
-    Game currentGame = (Game) game;
-    Player p = currentGame.getPlayer();
-    List<GameQuestion> questions = currentGame.getQuestionList();
-    try {
-      tx.begin();
+    if (countGame != 100) {
+      games.add((Game) game);
+      countGame++;
+    } else {
+      countGame = 0;
+      em = lab02EntityManager.getEntityManager();
+      EntityTransaction tx = em.getTransaction();
+      try {
+        tx.begin();
+        for (Game currentGame : games) {
+          Player p = currentGame.getPlayer();
+          List<GameQuestion> questions = currentGame.getQuestionList();
 
-      if (!em.contains(currentGame)) {
-        em.persist(currentGame);
-      }
-      if (!em.contains(p) && em.find(Player.class, p.getPlayerId()) == null) {
-        em.persist(p);
-      }
-      for (GameQuestion q : questions) {
-        if (!em.contains(q)) {
-          em.persist(q);
+          if (em.find(Player.class, p.getPlayerId()) == null) {
+            em.persist(p);
+          }
+
+          if (em.find(Game.class, currentGame.getGameId()) == null) {
+            em.persist(currentGame);
+          }
+
+          for (GameQuestion q : questions) {
+            if (!em.contains(q)) {
+              em.persist(q);
+            }
+          }
         }
+        tx.commit();
+        games.clear();
+      } catch (RuntimeException e) {
+        if (tx != null && tx.isActive()) {
+          tx.rollback();
+        }
+        throw e;
+      } finally {
+        em.close();
       }
-      tx.commit();
-    } catch (RuntimeException e) {
-      if (tx != null && tx.isActive()) {
-        tx.rollback();
-      }
-      throw e;
-    } finally {
-      em.close();
     }
   }
 }
