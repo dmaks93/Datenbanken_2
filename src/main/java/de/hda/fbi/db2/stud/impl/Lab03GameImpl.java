@@ -287,7 +287,7 @@ public class Lab03GameImpl extends Lab03Game {
       if (batch == batchSize) {
         tx.commit();
         batch = 0;
-        em2.close();
+        em2.clear();
       }
     } catch (RuntimeException e) {
       if (tx != null && tx.isActive()) {
