@@ -24,7 +24,7 @@ public class Lab02EntityManagerImpl extends Lab02EntityManager {
   // default-postgresPU
   // }
   public void init() {
-    emf = Persistence.createEntityManagerFactory("fbi-postgresPU");
+    emf = Persistence.createEntityManagerFactory("default-postgresPU");
   }
 
   /**
