@@ -18,14 +18,14 @@ Hash Map anstelle eines Arrays um alle Kategorien, die für ein jeweiliges Spiel
 
 Implementierung von Batch Transaction. Es werden 1000 Spiele in eine Transaktion abgelegt.
 
-Vergleich der Durchlaufzeit mit flush() im Entity Manager vs ohne flush:
+Vergleich der Durchlaufzeit mit flush() am Ende jeder im Entity Manager vs ohne flush:
 
 | Gerät   | flush()   | ohne flush() |
 |:--------|:----------|:------------:| 
 | Laptop  | 00:05:50h |  00:05:58h   |
-| Desktop | 00:00:65h |  00:00:64h   |
+| Desktop | 00:05:10h |  00:00:64h   |
 
-Wir haben uns entschieden flush() und clear() nicht explizit zu nutzen da beide Methoden bereits beim Commit der Transaktion mit berücksichtigt werden.
+Wir haben uns entschieden flush() und clear() nicht explizit zu nutzen da beide Methoden bereits beim Commit der Transaktion implizit aufgerufen werden.
 und keine Performancegewinne garantieren.
 
 
