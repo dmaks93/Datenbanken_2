@@ -101,6 +101,12 @@ public class Game {
     return endTime;
   }
 
+  /**
+   * @param dayOfMonth
+   * @param hour
+   * @param minutes
+   * @throws ParseException
+   */
   public void setCustomTime(int dayOfMonth, int hour, int minutes) throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     Date startDate = dateFormat.parse(String.format("%02d.01.2024 %02d:%02d", dayOfMonth, hour, minutes));
