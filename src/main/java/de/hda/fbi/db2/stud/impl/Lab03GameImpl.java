@@ -19,6 +19,9 @@ import javax.persistence.Query;
 public class Lab03GameImpl extends Lab03Game {
   private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
   private static final Random rand = new Random();
+  private EntityManager em = lab02EntityManager.getEntityManager();
+  private String query = "SELECT c FROM Category c ORDER BY c.categoryId";
+  private List<Category> allCategories = em.createQuery(query, Category.class).getResultList();
 
   /**
    * Creates a new Player or retrieves it from the database.
@@ -38,7 +41,7 @@ public class Lab03GameImpl extends Lab03Game {
    */
   @Override
   public Object getOrCreatePlayer(String playerName) {
-    EntityManager em = lab02EntityManager.getEntityManager();
+    em = lab02EntityManager.getEntityManager();
     Query query = em.createNamedQuery("findPlayerByName");
     query.setParameter("name", playerName);
     Player existingPlayer;
@@ -125,13 +128,8 @@ public class Lab03GameImpl extends Lab03Game {
     String userInput = "";
     int number;
     List<Category> categoriesToPlay = new ArrayList<>();
-    List<Category> allCategories;
-
-    EntityManager em = lab02EntityManager.getEntityManager();
     int catCounter = 0;
     while (true) {
-      String query = "SELECT c FROM Category c ORDER BY c.categoryId";
-      allCategories = em.createQuery(query, Category.class).getResultList();
       for (Category c: allCategories) {
         System.out.println(c.getCategoryId() + ": " + c.getName());
       }
@@ -150,7 +148,6 @@ public class Lab03GameImpl extends Lab03Game {
         break;
       }
     }
-    em.close();
     while (true) {
       System.out.println("Gebe die Anzahl an Fragen pro Kategorie an");
       userInput = scanner.nextLine();
