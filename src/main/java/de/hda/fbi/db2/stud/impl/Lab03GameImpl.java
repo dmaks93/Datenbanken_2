@@ -39,7 +39,7 @@ public class Lab03GameImpl extends Lab03Game {
   @Override
   public Object getOrCreatePlayer(String playerName) {
     EntityManager em = lab02EntityManager.getEntityManager();
-    Query query = em.createQuery("SELECT p from Player p where p.username = :name");
+    Query query = em.createNamedQuery("findPlayerByName");
     query.setParameter("name", playerName);
     Player existingPlayer;
     try {

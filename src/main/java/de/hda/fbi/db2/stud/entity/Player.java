@@ -6,9 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+@NamedQueries({
+    @NamedQuery (name = "findPlayerByName", query = "SELECT p from Player p where p.username = :name") })
 public class Player {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_generator")
