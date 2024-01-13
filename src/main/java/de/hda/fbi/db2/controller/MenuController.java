@@ -2,6 +2,7 @@ package de.hda.fbi.db2.controller;
 
 import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.api.Lab03Game;
+import de.hda.fbi.db2.stud.entity.GameQuestion;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -83,14 +84,26 @@ public class MenuController {
     Date startDate = dateFormat.parse("2024-02-26");
     Date endDate = dateFormat.parse("2024-02-28");
 
-    TypedQuery<String> query = controller.getLab02EntityManager().getEntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
-    query.setParameter("startTime",  startDate);
-    query.setParameter("endTime",  endDate);
+    TypedQuery<String> query1 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
+    query1.setParameter("startTime",  startDate);
+    query1.setParameter("endTime",  endDate);
 
-    List<String> usernames = query.getResultList();
+    List<String> usernames = query1.getResultList();
 
     for (String s : usernames) {
       System.out.println(s);
+    }
+
+    TypedQuery<Object[]> query2 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("getPlayerGameInfo", Object[].class);
+    query2.setParameter("player",  "Player1");
+
+    List<Object[]> player_game_info = query2.getResultList();
+
+    for (Object[] result : player_game_info) {
+      int gameId = (int) result[0];
+      Date startTime = (Date) result[1];
+      Long totalQuestions = (Long) result[2];
+      System.out.println("Game ID: " + gameId + ", Start Time: " + startTime + ", Total Questions: " + totalQuestions);
     }
 
   }

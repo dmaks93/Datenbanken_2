@@ -5,10 +5,22 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+
 @Entity
+@NamedQuery(
+    name = "getPlayerGameInfo",
+    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions "
+        + "FROM GameQuestion g "
+        + "JOIN g.game s "
+        + "JOIN g.question q "
+        + "JOIN s.player p "
+        + "WHERE p.username = :player "
+        + "GROUP BY g.game.gameId, s.startTime"
+)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
 public class GameQuestion {
   @Id
