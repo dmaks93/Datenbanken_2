@@ -1,9 +1,9 @@
 **Ausgabe aller Spieler (Spielername), die in einem bestimmten Zeitraum gespielt haben:**
 
-SELECT DISTINCT g.player.username
+SELECT DISTINCT p.username
 FROM Game g
 JOIN player p on g.player_playerid = p.playerid
-WHERE g.starttime BETWEEN 2024-02-26 AND 2024-02-28;
+WHERE g.starttime BETWEEN '2024-02-26' AND '2024-02-28';
 
 ![img_3.png](img_3.png)
 
