@@ -15,11 +15,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
 @Entity
+@NamedQuery(
+    name = "findDistinctUsernamesByTimeRange",
+    query = "SELECT DISTINCT g.player.username " +
+        "FROM Game g " +
+        "WHERE g.starttime BETWEEN :starttime AND :endtime"
+)
 public class Game {
 
   @Id

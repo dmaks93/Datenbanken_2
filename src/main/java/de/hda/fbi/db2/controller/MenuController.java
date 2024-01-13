@@ -1,10 +1,12 @@
 package de.hda.fbi.db2.controller;
 
+import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.api.Lab03Game;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import javax.persistence.TypedQuery;
 
 /**
  * MenuController Created by l.koehler on 05.08.2019.
@@ -13,8 +15,14 @@ public class MenuController {
 
   private final Controller controller;
 
+  protected Lab02EntityManager lab02EntityManager;
+
   public MenuController(Controller controller) {
     this.controller = controller;
+  }
+
+  public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
+    this.lab02EntityManager = lab02EntityManager;
   }
 
   /**
@@ -68,7 +76,11 @@ public class MenuController {
   }
 
   private void analyzeData() {
+    TypedQuery<String> query = controller.getLab02EntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
+    query.setParameter("starttime", yourStarttimeValue);
+    query.setParameter("endtime", yourEndtimeValue);
 
+    List<String> usernames = query.getResultList();
   }
 
   private void createMassData() {
