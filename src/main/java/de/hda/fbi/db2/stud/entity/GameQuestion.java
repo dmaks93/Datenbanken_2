@@ -5,10 +5,55 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+
 @Entity
+//@NamedQuery(
+//    name = "getPlayerGameInfo",
+//    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions, "
+//        + "SUM(CASE WHEN g.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers "
+//        + "FROM GameQuestion g "
+//        + "JOIN g.game s "
+//        + "JOIN g.question q "
+//        + "JOIN s.player p "
+//        + "WHERE p.username = :player "
+//        + "GROUP BY p.username, g.game.gameId, s.startTime"
+//)
+
+@NamedQuery(
+    name = "getPlayerGameInfo",
+    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions, "
+        + "SUM(CASE WHEN g.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers "
+        + "FROM GameQuestion g "
+        + "JOIN g.game s "
+        + "JOIN g.question q "
+        + "JOIN s.player p "
+        + "WHERE p.username = :player "
+        + "GROUP BY p.username, g.game.gameId, s.startTime"
+)
+
+@NamedQuery(
+    name = "getPlayerGameInfo2",
+    query = "SELECT g.gameId, g.startTime, COUNT(q.questionId) AS totalQuestions, " +
+        "SUM(CASE WHEN gq.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers " +
+        "FROM Game g " +
+        "LEFT JOIN g.gameQuestions gq " +
+        "LEFT JOIN gq.question q " +
+        "WHERE g.player.username = :player " +
+        "GROUP BY g.gameId, g.startTime"
+)
+@NamedQuery(
+    name = "getMostCommonCategory",
+    query = "SELECT c.name AS category_name, COUNT(q.questionId) AS category_count " +
+        "FROM GameQuestion gq " +
+        "JOIN gq.question q " +
+        "JOIN q.category c " +
+        "GROUP BY c.categoryId " +
+        "ORDER BY category_count DESC "
+)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
 public class GameQuestion {
   @Id

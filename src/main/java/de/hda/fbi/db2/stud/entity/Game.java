@@ -15,11 +15,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
 @Entity
+@NamedQuery(
+    name = "findDistinctUsernamesByTimeRange",
+    query = "SELECT DISTINCT g.player.username " +
+        "FROM Game g " +
+        "WHERE g.startTime BETWEEN :startTime AND :endTime"
+)
+@NamedQuery(
+    name = "gamesPerPlayer",
+    query = "SELECT p.username, COUNT(p.playerId) AS playedGames "
+        + "FROM Game g "
+        + "JOIN Player p ON g.player.playerId = p.playerId "
+        + "GROUP BY p.username "
+        + "ORDER BY playedGames DESC"
+)
 public class Game {
 
   @Id

@@ -1,10 +1,16 @@
 package de.hda.fbi.db2.controller;
 
+import de.hda.fbi.db2.api.Lab02EntityManager;
 import de.hda.fbi.db2.api.Lab03Game;
+import de.hda.fbi.db2.stud.entity.GameQuestion;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.TypedQuery;
 
 /**
  * MenuController Created by l.koehler on 05.08.2019.
@@ -13,8 +19,14 @@ public class MenuController {
 
   private final Controller controller;
 
+  protected Lab02EntityManager lab02EntityManager;
+
   public MenuController(Controller controller) {
     this.controller = controller;
+  }
+
+  public final void setLab02EntityManager(Lab02EntityManager lab02EntityManager) {
+    this.lab02EntityManager = lab02EntityManager;
   }
 
   /**
@@ -67,8 +79,64 @@ public class MenuController {
     }
   }
 
-  private void analyzeData() {
+  private void analyzeData() throws ParseException {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date startDate = dateFormat.parse("2024-02-26");
+    Date endDate = dateFormat.parse("2024-02-28");
 
+    TypedQuery<String> query1 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
+    query1.setParameter("startTime",  startDate);
+    query1.setParameter("endTime",  endDate);
+
+    List<String> usernames = query1.getResultList();
+
+    for (String s : usernames) {
+      System.out.println(s);
+    }
+
+    TypedQuery<Object[]> query2 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("getPlayerGameInfo2", Object[].class);
+    query2.setParameter("player",  "Player1");
+
+    List<Object[]> player_game_info = query2.getResultList();
+    System.out.println("Number of results: " + player_game_info.size());
+
+    for (Object[] result : player_game_info) {
+      int gameId = (int) result[0];
+      Date startTime = (Date) result[1];
+      Long totalQuestions = (Long) result[2];
+      Long correctAnswers = (Long) result[3];
+
+      double correctPercentage = (correctAnswers * 100.0) / totalQuestions;
+
+      System.out.println("Game ID: " + gameId + ", Start Time: " + startTime +
+          ", Total Questions: " + totalQuestions +
+          ", Correct Answers: " + correctAnswers +
+          ", Correct Percentage: " + correctPercentage + "%");
+    }
+
+    TypedQuery<Object[]> query3 = controller.getLab02EntityManager().getEntityManager()
+        .createNamedQuery("gamesPerPlayer", Object[].class);
+
+    List<Object[]> resultList = query3.getResultList();
+
+    System.out.println("Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:");
+
+    for (Object[] result : resultList) {
+      String username = (String) result[0];
+      Long playedGames = (Long) result[1];
+      System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
+    }
+
+    TypedQuery<Object[]> query4 = controller.getLab02EntityManager().getEntityManager()
+        .createNamedQuery("getMostCommonCategory", Object[].class);
+
+    resultList = query4.getResultList();
+
+    for (Object[] result : resultList) {
+      String category = (String) result[0];
+      Long count = (Long) result[1];
+      System.out.println("category: " + category + ", Gespielte Kategore: " + count);
+    }
   }
 
   private void createMassData() {

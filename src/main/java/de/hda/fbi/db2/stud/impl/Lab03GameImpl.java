@@ -111,9 +111,9 @@ public class Lab03GameImpl extends Lab03Game {
   public List<Question> getQuestions(List<?> categories, int amountOfQuestionsForCategory) {
     List<Question> questions = new ArrayList<>();
     List<Category> categoryList = (List<Category>) categories;
-    List<Question> allQuestions;
+    List<Question> allQuestions = new ArrayList<>();
     for (Category category : categoryList) {
-      allQuestions = category.getQuestions();
+      allQuestions.addAll(category.getQuestions());
       int numQuestions = Math.min(allQuestions.size(), amountOfQuestionsForCategory);
       int randomIndex;
       for (int i = 0; i < numQuestions; i++) {
