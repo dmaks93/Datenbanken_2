@@ -17,9 +17,10 @@ GROUP BY s.id, s.spielDatum
 
 **Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:**
 
-SELECT s.spielername, COUNT(s.id) AS gespielteSpiele
-FROM Spiel s
-GROUP BY s.spielername
+SELECT p.username, COUNT(p.playerid) AS gespielteSpiele
+FROM game g
+JOIN player p ON g.player_playerid = p.playerid
+GROUP BY p.username
 ORDER BY gespielteSpiele DESC
 
 **Ausgabe der am meisten gefragten Kategorie, oder alternativ, die Beliebtheit der Kategorien nach Anzahl der Auswahl absteigend sortiert:**
