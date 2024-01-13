@@ -121,13 +121,22 @@ public class MenuController {
 
     System.out.println("Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:");
 
-   // for (Object[] result : resultList) {
-   //   String username = (String) result[0];
-   //   Long playedGames = (Long) result[1];
-//
-   //   System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
-   // }
+    for (Object[] result : resultList) {
+      String username = (String) result[0];
+      Long playedGames = (Long) result[1];
+      System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
+    }
 
+    TypedQuery<Object[]> query4 = controller.getLab02EntityManager().getEntityManager()
+        .createNamedQuery("getMostCommonCategory", Object[].class);
+
+    resultList = query4.getResultList();
+
+    for (Object[] result : resultList) {
+      String category = (String) result[0];
+      Long count = (Long) result[1];
+      System.out.println("category: " + category + ", Gespielte Kategore: " + count);
+    }
   }
 
   private void createMassData() {

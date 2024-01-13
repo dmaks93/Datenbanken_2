@@ -45,6 +45,15 @@ import javax.persistence.UniqueConstraint;
         "WHERE g.player.username = :player " +
         "GROUP BY g.gameId, g.startTime"
 )
+@NamedQuery(
+    name = "getMostCommonCategory",
+    query = "SELECT c.name AS category_name, COUNT(q.questionId) AS category_count " +
+        "FROM GameQuestion gq " +
+        "JOIN gq.question q " +
+        "JOIN q.category c " +
+        "GROUP BY c.categoryId " +
+        "ORDER BY category_count DESC "
+)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
 public class GameQuestion {
   @Id
