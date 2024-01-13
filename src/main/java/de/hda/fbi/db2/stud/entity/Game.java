@@ -27,6 +27,14 @@ import javax.persistence.Temporal;
         "FROM Game g " +
         "WHERE g.startTime BETWEEN :startTime AND :endTime"
 )
+@NamedQuery(
+    name = "gamesPerPlayer",
+    query = "SELECT p.username, COUNT(p.playerId) AS playedGames "
+        + "FROM Game g "
+        + "JOIN Player p ON g.player.playerId = p.playerId "
+        + "GROUP BY p.username "
+        + "ORDER BY playedGames DESC"
+)
 public class Game {
 
   @Id

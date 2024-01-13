@@ -98,6 +98,7 @@ public class MenuController {
     query2.setParameter("player",  "Player1");
 
     List<Object[]> player_game_info = query2.getResultList();
+    System.out.println("Number of results: " + player_game_info.size());
 
     for (Object[] result : player_game_info) {
       int gameId = (int) result[0];
@@ -105,13 +106,26 @@ public class MenuController {
       Long totalQuestions = (Long) result[2];
       Long correctAnswers = (Long) result[3];
 
-      // Calculate the percentage of correct answers
       double correctPercentage = (correctAnswers * 100.0) / totalQuestions;
 
       System.out.println("Game ID: " + gameId + ", Start Time: " + startTime +
           ", Total Questions: " + totalQuestions +
           ", Correct Answers: " + correctAnswers +
           ", Correct Percentage: " + correctPercentage + "%");
+    }
+
+    TypedQuery<Object[]> query3 = controller.getLab02EntityManager().getEntityManager()
+        .createNamedQuery("gamesPerPlayer", Object[].class);
+
+    List<Object[]> resultList = query3.getResultList();
+
+    System.out.println("Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:");
+
+    for (Object[] result : resultList) {
+      String username = (String) result[0];
+      Long playedGames = (Long) result[1];
+
+      System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
     }
 
   }
