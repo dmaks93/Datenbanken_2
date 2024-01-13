@@ -88,6 +88,11 @@ public class MenuController {
     query.setParameter("endTime",  endDate);
 
     List<String> usernames = query.getResultList();
+
+    for (String s : usernames) {
+      System.out.println(s);
+    }
+
   }
 
   private void createMassData() {
