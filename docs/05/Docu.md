@@ -2,9 +2,10 @@
 
 SELECT DISTINCT g.player.username
 FROM Game g
-WHERE g.starttime BETWEEN :starttime AND :endtime;
+JOIN player p on g.player_playerid = p.playerid
+WHERE g.starttime BETWEEN 2024-02-26 AND 2024-02-28;
 
-z.B. starttime = '2024-02-26' und endtime = '2024-02-28'
+![img_3.png](img_3.png)
 
 **Ausgabe zu einem bestimmten Spieler: Alle Spiele (Id, Datum), sowie die Anzahl der korrekten Antworten pro Spiel mit Angabe der Gesamtanzahl der Fragen pro Spiel bzw. alternativ den Prozentsatz der korrekt beantworteten Fragen:**
 
@@ -27,6 +28,8 @@ JOIN player p ON g.player_playerid = p.playerid
 GROUP BY p.username
 ORDER BY gespielteSpiele DESC
 
+![img_1.png](img_1.png)
+
 **Ausgabe der am meisten gefragten Kategorie, oder alternativ, die Beliebtheit der Kategorien nach Anzahl der Auswahl absteigend sortiert:**
 
 SELECT c.name AS category_name, COUNT(q.questionid) AS category_count
@@ -35,3 +38,5 @@ JOIN question q ON gq.question_id = q.questionid
 JOIN category c ON c.categoryid = q.category_categoryid
 GROUP BY c.categoryid
 ORDER BY category_count DESC
+
+![img_2.png](img_2.png)
