@@ -13,13 +13,14 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @NamedQuery(
     name = "getPlayerGameInfo",
-    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions "
+    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions, "
+        + "SUM(CASE WHEN g.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers "
         + "FROM GameQuestion g "
         + "JOIN g.game s "
         + "JOIN g.question q "
         + "JOIN s.player p "
         + "WHERE p.username = :player "
-        + "GROUP BY g.game.gameId, s.startTime"
+        + "GROUP BY p.username, g.game.gameId, s.startTime"
 )
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
 public class GameQuestion {

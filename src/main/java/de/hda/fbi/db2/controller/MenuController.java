@@ -103,7 +103,15 @@ public class MenuController {
       int gameId = (int) result[0];
       Date startTime = (Date) result[1];
       Long totalQuestions = (Long) result[2];
-      System.out.println("Game ID: " + gameId + ", Start Time: " + startTime + ", Total Questions: " + totalQuestions);
+      Long correctAnswers = (Long) result[3];
+
+      // Calculate the percentage of correct answers
+      double correctPercentage = (correctAnswers * 100.0) / totalQuestions;
+
+      System.out.println("Game ID: " + gameId + ", Start Time: " + startTime +
+          ", Total Questions: " + totalQuestions +
+          ", Correct Answers: " + correctAnswers +
+          ", Correct Percentage: " + correctPercentage + "%");
     }
 
   }
