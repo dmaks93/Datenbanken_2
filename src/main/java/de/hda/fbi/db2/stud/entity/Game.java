@@ -25,7 +25,7 @@ import javax.persistence.Temporal;
     name = "findDistinctUsernamesByTimeRange",
     query = "SELECT DISTINCT g.player.username " +
         "FROM Game g " +
-        "WHERE g.starttime BETWEEN :starttime AND :endtime"
+        "WHERE g.startTime BETWEEN :startTime AND :endTime"
 )
 public class Game {
 

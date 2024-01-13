@@ -5,6 +5,9 @@ import de.hda.fbi.db2.api.Lab03Game;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.TypedQuery;
 
@@ -75,10 +78,14 @@ public class MenuController {
     }
   }
 
-  private void analyzeData() {
-    TypedQuery<String> query = controller.getLab02EntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
-    query.setParameter("starttime", yourStarttimeValue);
-    query.setParameter("endtime", yourEndtimeValue);
+  private void analyzeData() throws ParseException {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date startDate = dateFormat.parse("2024-02-26");
+    Date endDate = dateFormat.parse("2024-02-28");
+
+    TypedQuery<String> query = controller.getLab02EntityManager().getEntityManager().createNamedQuery("findDistinctUsernamesByTimeRange", String.class);
+    query.setParameter("startTime",  startDate);
+    query.setParameter("endTime",  endDate);
 
     List<String> usernames = query.getResultList();
   }
