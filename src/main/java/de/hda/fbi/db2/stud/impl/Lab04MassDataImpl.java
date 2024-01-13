@@ -46,15 +46,15 @@ public class Lab04MassDataImpl extends Lab04MassData {
 
     for (int i = 0; i < players; i++) { // each player
       if (i % 1000 == 0) {
-        dayOfMonth++;
+        //dayOfMonth++;
         startHour = startHour + 1;
         startMinute = startMinute + 1;
       }
       player = (Player) lab03Game.getOrCreatePlayer("Player" + i);
       for (int j = 0; j < games; j++) { // each game
-        if (j % 10 == 0) {
-          dayOfMonth++;
-          startHour = startHour + 3;
+        if (j % 100 == 0) {
+          //dayOfMonth++;
+          startHour = startHour + 1;
           startMinute = startMinute + 1;
         }
         numCategory = rand.nextInt(5);
