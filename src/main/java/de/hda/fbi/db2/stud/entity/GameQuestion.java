@@ -11,6 +11,18 @@ import javax.persistence.UniqueConstraint;
 
 
 @Entity
+//@NamedQuery(
+//    name = "getPlayerGameInfo",
+//    query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions, "
+//        + "SUM(CASE WHEN g.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers "
+//        + "FROM GameQuestion g "
+//        + "JOIN g.game s "
+//        + "JOIN g.question q "
+//        + "JOIN s.player p "
+//        + "WHERE p.username = :player "
+//        + "GROUP BY p.username, g.game.gameId, s.startTime"
+//)
+
 @NamedQuery(
     name = "getPlayerGameInfo",
     query = "SELECT g.game.gameId, s.startTime, COUNT(q.questionId) AS totalQuestions, "
@@ -21,6 +33,17 @@ import javax.persistence.UniqueConstraint;
         + "JOIN s.player p "
         + "WHERE p.username = :player "
         + "GROUP BY p.username, g.game.gameId, s.startTime"
+)
+
+@NamedQuery(
+    name = "getPlayerGameInfo2",
+    query = "SELECT g.gameId, g.startTime, COUNT(q.questionId) AS totalQuestions, " +
+        "SUM(CASE WHEN gq.isCorrect = true THEN 1 ELSE 0 END) AS correctAnswers " +
+        "FROM Game g " +
+        "LEFT JOIN g.gameQuestions gq " +
+        "LEFT JOIN gq.question q " +
+        "WHERE g.player.username = :player " +
+        "GROUP BY g.gameId, g.startTime"
 )
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "question_id", "game_id" }))
 public class GameQuestion {

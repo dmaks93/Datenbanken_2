@@ -57,8 +57,8 @@ public class Lab04MassDataImpl extends Lab04MassData {
           startHour = startHour + 1;
           startMinute = startMinute + 1;
         }
-        numCategory = rand.nextInt(5);
-        numQuestions = rand.nextInt(5);
+        numCategory = rand.nextInt(4) + 2;
+        numQuestions = rand.nextInt(5) + 1;
         allCategories.addAll(playableCategories);
         categoriesToPlay.clear(); // Clear the list before selecting new categories
         Iterator<Category> iterator = allCategories.iterator();

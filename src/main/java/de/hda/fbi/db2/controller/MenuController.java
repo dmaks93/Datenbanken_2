@@ -94,7 +94,7 @@ public class MenuController {
       System.out.println(s);
     }
 
-    TypedQuery<Object[]> query2 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("getPlayerGameInfo", Object[].class);
+    TypedQuery<Object[]> query2 = controller.getLab02EntityManager().getEntityManager().createNamedQuery("getPlayerGameInfo2", Object[].class);
     query2.setParameter("player",  "Player1");
 
     List<Object[]> player_game_info = query2.getResultList();
@@ -121,12 +121,12 @@ public class MenuController {
 
     System.out.println("Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:");
 
-    for (Object[] result : resultList) {
-      String username = (String) result[0];
-      Long playedGames = (Long) result[1];
-
-      System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
-    }
+   // for (Object[] result : resultList) {
+   //   String username = (String) result[0];
+   //   Long playedGames = (Long) result[1];
+//
+   //   System.out.println("Spieler: " + username + ", Gespielte Spiele: " + playedGames);
+   // }
 
   }
 
