@@ -8,12 +8,14 @@ z.B. starttime = '2024-02-26' und endtime = '2024-02-28'
 
 **Ausgabe zu einem bestimmten Spieler: Alle Spiele (Id, Datum), sowie die Anzahl der korrekten Antworten pro Spiel mit Angabe der Gesamtanzahl der Fragen pro Spiel bzw. alternativ den Prozentsatz der korrekt beantworteten Fragen:**
 
-SELECT g.id, g.endtime, COUNT(f.id) AS gesamtFragen, SUM(CASE WHEN f.korrekt = true THEN 1 ELSE 0 END) AS korrekteAntworten,
-(SUM(CASE WHEN f.korrekt = true THEN 1 ELSE 0 END) / COUNT(f.id) * 100) AS prozentsatzKorrekt
-FROM Game g
-JOIN g.fragen f
-WHERE g.username = "player2"
-GROUP BY s.id, s.spielDatum
+SELECT g.game_id, s.starttime, COUNT(q.questionid) AS gesamtFragen
+FROM gamequestion g
+JOIN question q ON g.question_id = q.questionid
+JOIN game s ON g.game_id = s.gameid
+JOIN player p ON s.player_playerid = p.playerid
+Where p.username = 'Player1'
+GROUP BY g.game_id, s.starttime (Bearbeitet)
+
 
 **Ausgabe aller Spieler mit Anzahl der gespielten Spiele, nach Anzahl absteigend geordnet:**
 
