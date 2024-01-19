@@ -48,7 +48,7 @@ ORDER BY gespielteSpiele DESC
 
 ![img_1.png](img_1.png)
 
-Wir etwaige Indizes für besipielsweise username oder player_playerid, sind bereits in unserem Schema vorhanden. Am Ende betragen unsere Kosten der Anfrage 37031.74
+Etwaige Indizes für besipielsweise username oder player_playerid, sind bereits in unserem Schema vorhanden. Am Ende betragen unsere Kosten der Anfrage 37031.74
 
 **Ausgabe der am meisten gefragten Kategorie, oder alternativ, die Beliebtheit der Kategorien nach Anzahl der Auswahl absteigend sortiert:**
 
