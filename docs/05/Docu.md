@@ -29,7 +29,7 @@ GROUP BY g.gameId, g.startTime;
 
 ![img.png](img.png)
 
-Ursprünglich verursachte unsere Anfrage Kosten von cost 27199.4. Da wir einen Index für player_playerid und starttime in game erstellt haben, erhielten wir den Folgenden neuen Explain:
+Ursprünglich verursachte unsere Anfrage Kosten von cost 27199.4. Da wir einen Index für player_playerid und starttime in game erstellt haben, erhielten wir den folgenden neuen Explain:
 
 ![img_7.png](img_7.png)
 
